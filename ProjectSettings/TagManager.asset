@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Ground
+  - Enemy
+  - Wall
+  - ETop
+  - EnemyFire
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Enemy
+  - Water
+  - UI
+  - Wall
+  - Player
+  - EnemyFire
+  - Ground
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Sky 3
+    uniqueID: 2211227897
+    locked: 0
+  - name: Sky 2
+    uniqueID: 927460339
+    locked: 0
+  - name: Sky1
+    uniqueID: 1007903809
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Back 1 TempleWall
+    uniqueID: 944862475
+    locked: 0
+  - name: Main
+    uniqueID: 872008105
+    locked: 0
+  - name: front
+    uniqueID: 1854793421
+    locked: 0
+  - name: Character
+    uniqueID: 962000733
+    locked: 0
+  - name: Lava
+    uniqueID: 2661300677
+    locked: 0

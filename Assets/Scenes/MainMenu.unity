@@ -5942,6 +5942,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 789882564}
     m_Modifications:
+    - target: {fileID: 3325947379101810769, guid: 8b3d8bf3aca175f4ab68efe4bc8e4ea4, type: 3}
+      propertyPath: m_InputType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3325947379101810769, guid: 8b3d8bf3aca175f4ab68efe4bc8e4ea4, type: 3}
+      propertyPath: m_ContentType
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3325947379101810770, guid: 8b3d8bf3aca175f4ab68efe4bc8e4ea4, type: 3}
       propertyPath: m_Color.a
       value: 1
@@ -6044,6 +6052,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3325947379590947413, guid: 8b3d8bf3aca175f4ab68efe4bc8e4ea4, type: 3}
       propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3325947379590947413, guid: 8b3d8bf3aca175f4ab68efe4bc8e4ea4, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3325947379651476177, guid: 8b3d8bf3aca175f4ab68efe4bc8e4ea4, type: 3}
@@ -6309,6 +6321,22 @@ PrefabInstance:
     - target: {fileID: 3325947380694848412, guid: 8b3d8bf3aca175f4ab68efe4bc8e4ea4, type: 3}
       propertyPath: m_Color.r
       value: 0.16470589
+      objectReference: {fileID: 0}
+    - target: {fileID: 3325947380873376177, guid: 8b3d8bf3aca175f4ab68efe4bc8e4ea4, type: 3}
+      propertyPath: m_InputType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3325947380873376177, guid: 8b3d8bf3aca175f4ab68efe4bc8e4ea4, type: 3}
+      propertyPath: m_ContentType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3325947380873376177, guid: 8b3d8bf3aca175f4ab68efe4bc8e4ea4, type: 3}
+      propertyPath: m_KeyboardType
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3325947380873376177, guid: 8b3d8bf3aca175f4ab68efe4bc8e4ea4, type: 3}
+      propertyPath: m_CharacterValidation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3325947380873376178, guid: 8b3d8bf3aca175f4ab68efe4bc8e4ea4, type: 3}
       propertyPath: m_Color.a
@@ -6938,9 +6966,29 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6120436380997464043, guid: 7cd5f17e6c761214ab86c020e6fd5c27, type: 3}
+      propertyPath: m_ContentType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6120436380997464043, guid: 7cd5f17e6c761214ab86c020e6fd5c27, type: 3}
+      propertyPath: m_KeyboardType
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6120436380997464043, guid: 7cd5f17e6c761214ab86c020e6fd5c27, type: 3}
+      propertyPath: m_CharacterValidation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6120436381139033846, guid: 7cd5f17e6c761214ab86c020e6fd5c27, type: 3}
       propertyPath: m_Color.a
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6120436381139033847, guid: 7cd5f17e6c761214ab86c020e6fd5c27, type: 3}
+      propertyPath: m_InputType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6120436381139033847, guid: 7cd5f17e6c761214ab86c020e6fd5c27, type: 3}
+      propertyPath: m_ContentType
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6120436381150856230, guid: 7cd5f17e6c761214ab86c020e6fd5c27, type: 3}
       propertyPath: m_Color.a

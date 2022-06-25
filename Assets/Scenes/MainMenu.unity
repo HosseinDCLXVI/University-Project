@@ -4398,19 +4398,22 @@ MonoBehaviour:
   TotalPlayTime: {fileID: 455726192}
   TotalDeaths: {fileID: 769991292}
   TotalKills: {fileID: 452288925}
-  StatsArray:
+  HighestScore:
   - {fileID: 558122697}
-  - {fileID: 409456407}
-  - {fileID: 4550040}
-  - {fileID: 736660427}
   - {fileID: 1434853923}
-  - {fileID: 490040630}
-  - {fileID: 1759194766}
-  - {fileID: 1837625686}
   - {fileID: 344219987}
-  - {fileID: 1507371968}
-  - {fileID: 909231764}
+  Deaths:
+  - {fileID: 736660427}
+  - {fileID: 1837625686}
   - {fileID: 470661614}
+  Kills:
+  - {fileID: 409456407}
+  - {fileID: 490040630}
+  - {fileID: 1507371968}
+  PlayTime:
+  - {fileID: 4550040}
+  - {fileID: 1759194766}
+  - {fileID: 909231764}
 --- !u!1 &1507371966
 GameObject:
   m_ObjectHideFlags: 0
@@ -5624,18 +5627,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 2145690265}
-  m_Horizontal: 1
-  m_Vertical: 0
+  m_Horizontal: 0
+  m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 50
   m_Viewport: {fileID: 2113831866}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 1062212305}
   m_HorizontalScrollbarVisibility: 2
-  m_VerticalScrollbarVisibility: 2
+  m_VerticalScrollbarVisibility: 0
   m_HorizontalScrollbarSpacing: -3
   m_VerticalScrollbarSpacing: -3
   m_OnValueChanged:

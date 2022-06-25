@@ -9,15 +9,14 @@ public static class StatSaver
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string UserName =PlayerPrefs.GetString("UserName");
-        string Path = Application.persistentDataPath + "/"+UserName+"Stats.DCLXVI";
+        string Path = Application.persistentDataPath + "/" + UserName + "Stats.DCLXVI";
         FileStream stream = new FileStream(Path, FileMode.Create);
         formatter.Serialize(stream, TempStats);
         stream.Close();
-
     }
     public static Stats LoadStats(string UserName)
     {
-        string Path = Application.persistentDataPath + "/" + UserName + "Stats.DCLXVI";
+        string Path = Application.persistentDataPath + "/"+ UserName +"Stats.DCLXVI";
         if(File.Exists(Path))
         {
             BinaryFormatter formatter=new BinaryFormatter();
@@ -26,6 +25,7 @@ public static class StatSaver
             stream.Close();
             return PlayerStats;
         }
+        else
         return null;
     }
 

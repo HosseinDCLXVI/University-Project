@@ -22,13 +22,13 @@ public class SignUp : MonoBehaviour
         }
         else
         {
-            SignUpUsernameError.SetActive(false);
-            FileStream stream = new FileStream(path,FileMode.Create);
-            Stats NewStats = new Stats(0,Password.text,Email.text,null,0,0);
-            formatter.Serialize(stream, NewStats);
-            stream.Close();
             PlayerPrefs.SetString("UserName", Username.text);
+            SignUpUsernameError.SetActive(false);
+            Stats NewStats = new Stats(Password.text, Email.text, new int[] { 0, 0, 0 }, new int[] { 0, 0, 0 }, new int[] { 0, 0, 0 }, new int[] { 0, 0, 0 }, 0, 0);
+            StatSaver.SaveStats(NewStats);
             LatestProgressSaver.SaveLatestProgress(0, 0, 0, 0, 0, 0, 0, 0, false);
+
+
         }
 
     }

@@ -14,7 +14,7 @@ public class LogIn : MonoBehaviour
 
     public void logInBTN()
     {     
-        string Path = Application.persistentDataPath + "/" + UserName + "Stats.DCLXVI";
+        string Path = Application.persistentDataPath + "/" + UserName.text + "Stats.DCLXVI";
         if (File.Exists(Path))
         {
             BinaryFormatter formatter = new BinaryFormatter();

@@ -29,6 +29,10 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public float CurrentStamina; //comes from PlayerStamina
 
 
+    private void Awake()
+    {
+        Cursor.visible = false;
+    }
     void Update()
     {
         CurrentStamina = Player.GetComponent<PlayerStamina>().CurrentStamina;

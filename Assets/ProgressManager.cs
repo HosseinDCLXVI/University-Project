@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class ProgressManager : MonoBehaviour
 {
-    public int Totalkills=0;
+    public int Totalkills = 0;
     public float KillPoints; //comes from PlayerAttack
-    public float time=0;
+    public float time;
     public float Health; //Comes from PlayerHealth
     public int TotalScore;
     public Text TimeShowCase;
@@ -23,10 +23,10 @@ public class ProgressManager : MonoBehaviour
         {
             LatestProgress latestProgress = LatestProgressSaver.LoadLatestProgress(PlayerPrefs.GetString("UserName"));
             if (latestProgress != null)
-            { 
-                if(latestProgress.SavedInTheMiddle)
+            {
+                if (latestProgress.SavedInTheMiddle)
                 {
-                   transform.position = new Vector3(latestProgress.LastCheckpointPosition[0], latestProgress.LastCheckpointPosition[1], latestProgress.LastCheckpointPosition[2]);
+                    transform.position = new Vector3(latestProgress.LastCheckpointPosition[0], latestProgress.LastCheckpointPosition[1], latestProgress.LastCheckpointPosition[2]);
                     GetComponent<ProgressManager>().level = (int)latestProgress.Level;
                     GetComponent<ProgressManager>().time = (int)latestProgress.Time;
                     GetComponent<PlayerHealth>().CurrentHealth = (int)latestProgress.Health;
@@ -34,30 +34,43 @@ public class ProgressManager : MonoBehaviour
                     GetComponent<ProgressManager>().KillPoints = (int)latestProgress.Points;
                 }
             }
-         Continue.DoContinue = false;
+            Continue.DoContinue = false;
         }
         else
         {
             LatestProgress latestProgress = LatestProgressSaver.LoadLatestProgress(PlayerPrefs.GetString("UserName"));
-            latestProgress.SavedInTheMiddle = false;
-            LatestProgressSaver.SaveLatestProgress(latestProgress.LastCheckpointPosition[0], latestProgress.LastCheckpointPosition[1], latestProgress.LastCheckpointPosition[2], latestProgress.Level, latestProgress.Time, latestProgress.Health, latestProgress.Stamina, latestProgress.Points, latestProgress.SavedInTheMiddle);
+            if (latestProgress != null)
+            {
+                latestProgress.SavedInTheMiddle = false;
+                LatestProgressSaver.SaveLatestProgress(latestProgress.LastCheckpointPosition[0], latestProgress.LastCheckpointPosition[1], latestProgress.LastCheckpointPosition[2], latestProgress.Level, latestProgress.Time, latestProgress.Health, latestProgress.Stamina, latestProgress.Points, latestProgress.SavedInTheMiddle);
+            }
         }
     }
-    private void Update()
+
+    void Update()
     {
-        Health = GetComponent<PlayerHealth>().CurrentHealth;
-        Timer();
-        PointShowCase.text=KillPoints.ToString()+" Points";
-        TotalScoreCalculator();
+            Health = GetComponent<PlayerHealth>().CurrentHealth;
+            Timer();
+            PointShowCase.text = KillPoints.ToString() + " Points";
+            TotalScoreCalculator();
+
+        if(Time.timeScale==1)
+        {
+            Cursor.visible = false;           
+        }
+        else
+        {
+            Cursor.visible = true;
+        }
     }
     void Timer()
     {
-        time += Time.deltaTime;
-        int IntTime = (int)time;
-        TimeShowCase.text=IntTime.ToString()+" S";
+            time += Time.deltaTime;
+            int IntTime = (int)time;
+            TimeShowCase.text = IntTime.ToString() +" S";
     }
     void TotalScoreCalculator()
     {
-        TotalScore = (int)(KillPoints * Health / time);
+            TotalScore = (int)(KillPoints * (Health + 10));
     }
-}
+} 

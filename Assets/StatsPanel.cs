@@ -7,6 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class StatsPanel : MonoBehaviour
 {
+    
     public Text UserName;
 
     public Text TotalScore;
@@ -14,83 +15,68 @@ public class StatsPanel : MonoBehaviour
     public Text TotalDeaths;
     public Text TotalKills;
 
-    public Text[] StatsArray=new Text[12];
-    /*public Text Chapter1HighScore;
-    public Text Chapter1Deaths;
-    public Text Chapter1Kills;
-    public Text Chapter1PlayTime;
+    int SumScores=0;
+    int SumPlayTime = 0;
+    int SumDeaths = 0;
+    int SumKills=0;
 
-    public Text Chapter2HighScore;
-    public Text Chapter2Deaths;
-    public Text Chapter2Kills;
-    public Text Chapter2PlayTime;
-
-    public Text Chapter3HighScore;
-    public Text Chapter3Deaths;
-    public Text Chapter3Kills;
-    public Text Chapter3PlayTime;
-
-    public Text Chapter4HighScore;
-    public Text Chapter4Deaths;
-    public Text Chapter4Kills;
-    public Text Chapter4PlayTime;*/
-    //HighScore - totalKills - time-totalDeaths
+    public Text[] HighestScore = new Text[3];
+    public Text[] Deaths = new Text[3];
+    public Text[] Kills = new Text[3];
+    public Text[] PlayTime = new Text[3];
 
 
-    void Start()
+
+    void Awake()
     {
         UserName.text = PlayerPrefs.GetString("UserName");
         
         Stats PlayerStats= StatSaver.LoadStats(PlayerPrefs.GetString("UserName"));
-        for(int i=0;i<StatsArray.Length;i++)
+
+
+        //TotalScore.text=PlayerStats.TotalScores.ToString();
+        for (int i = 0; i < HighestScore.Length; i++)
         {
-            StatsArray[i].text = PlayerStats.Level[i + 4].ToString();
+            SumScores += PlayerStats.HighestScore[i];
+            TotalScore.text = SumScores.ToString();
         }
 
-        TotalScore.text=PlayerStats.TotalScores.ToString(); 
-
-        for (int i = 2; i < StatsArray.Length; i += 4)
+        for (int i = 0; i < PlayTime.Length; i ++)
         {
-            TotalPlayTime.text = (int.Parse(TotalPlayTime.text) + int.Parse(StatsArray[i].text)).ToString();
+            SumPlayTime += PlayerStats.PlayTime[i];
+            TotalPlayTime.text = SumPlayTime.ToString();
         }
 
-        for (int i = 3; i < StatsArray.Length; i += 4)
+        for (int i = 0; i < Deaths.Length; i ++)
         {
-            TotalDeaths.text = (int.Parse(TotalDeaths.text) + int.Parse(StatsArray[i].text)).ToString();
+            SumDeaths += PlayerStats.Deaths[i];
+            TotalDeaths.text = SumDeaths.ToString();
         }
 
-        for (int i = 1; i < StatsArray.Length; i += 4)
+        for (int i = 0; i < Kills.Length; i ++)
         {
-            TotalKills.text= (int.Parse(TotalKills.text)+int.Parse(StatsArray[i].text)).ToString();
+            SumKills += PlayerStats.Kills[i];
+            TotalKills.text = SumKills.ToString();
         }
-        //HighScore - totalKills - time-totalDeaths
-        /*UserName.text = 
 
-        TotalScore.text=
-        TotalPlayTime.text=
-        TotalKills.text=
-        TotalDeaths.text=
 
-        Chapter1HighScore.text=
-        Chapter1Deaths.text=
-        Chapter1Kills.text=
-        Chapter1PlayTime.text=
-
-        Chapter2HighScore.text=
-        Chapter2Deaths.text =
-        Chapter2Kills.text =
-        Chapter2PlayTime.text =
-
-        Chapter3HighScore.text =
-        Chapter3Deaths.text=
-        Chapter3Kills.text=
-        Chapter3PlayTime.text=
-
-        Chapter4HighScore.text=
-        Chapter4Deaths.text=
-        Chapter4Kills.text=
-        Chapter4PlayTime.text=*/
-
+        for (int i = 0; i < HighestScore.Length; i++)
+        {
+            HighestScore[i].text = PlayerStats.HighestScore[i].ToString();
+        }
+        for (int i = 0; i < Deaths.Length; i++)
+        {
+            Deaths[i].text = PlayerStats.Deaths[i].ToString();
+        }
+        for (int i = 0; i < Kills.Length; i++)
+        {
+            Kills[i].text = PlayerStats.Kills[i].ToString();
+        }
+        for (int i = 0; i < PlayTime.Length; i++)
+        {
+            PlayTime[i].text = PlayerStats.PlayTime[i].ToString();
+        }       
     }
+    
 
 }

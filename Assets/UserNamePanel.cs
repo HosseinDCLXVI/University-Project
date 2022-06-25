@@ -8,20 +8,19 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class UserNamePanel : MonoBehaviour
 {
     public Text UsernameTXT;
-    void Start()
+    void Awake()
     {
-        if(PlayerPrefs.GetString("UserName") is null)
+        if(PlayerPrefs.GetString("UserName") == "")
         {
             PlayerPrefs.SetString("UserName", "Guest");
-
-            BinaryFormatter formatter = new BinaryFormatter();
             string path = Application.persistentDataPath + "/GuestStats.DCLXVI";
+            UsernameTXT.text = PlayerPrefs.GetString("UserName");
+
             if (!File.Exists(path))
             {
-                FileStream stream = new FileStream(path, FileMode.Create);
-                Stats NewStats = new Stats(0,null,null,null,0,0);
-                formatter.Serialize(stream, NewStats);
-                stream.Close();
+                Stats NewStats = new Stats(null, null, new int[] { 0, 0, 0 }, new int[] { 0, 0, 0 }, new int[] { 0, 0, 0 }, new int[] { 0, 0, 0 }, 0, 0);
+                LatestProgressSaver.SaveLatestProgress(0, 0, 0, 0, 0, 0, 0, 0, false);
+                StatSaver.SaveStats(NewStats);
             }
         }
 
@@ -31,5 +30,6 @@ public class UserNamePanel : MonoBehaviour
     void Update()
     {
         UsernameTXT.text = PlayerPrefs.GetString("UserName");
+        Cursor.visible = true;
     }
 }

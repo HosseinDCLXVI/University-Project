@@ -11,6 +11,7 @@ public class SignUp : MonoBehaviour
     public InputField Username;
     public InputField Password;
     public InputField Email;
+    public GameObject MainMenuPanel;
 
     public void SignUpBTN()
     {
@@ -28,7 +29,8 @@ public class SignUp : MonoBehaviour
             StatSaver.SaveStats(NewStats);
             LatestProgressSaver.SaveLatestProgress(0, 0, 0, 0, 0, 0, 0, 0, false);
 
-
+            MainMenuPanel.SetActive(true);
+            this.gameObject.SetActive(false);
         }
 
     }

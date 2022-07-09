@@ -20,15 +20,10 @@ public class MainMenuScript : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void ContinueBTN()
     {
         SceneManager.LoadScene((int)LatestProgressSaver.LoadLatestProgress(PlayerPrefs.GetString("UserName")).Level);
         Continue.DoContinue = true;
     }
+   
 }

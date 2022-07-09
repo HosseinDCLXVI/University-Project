@@ -7,10 +7,10 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class UserNamePanel : MonoBehaviour
 {
-    public Text UsernameTXT;
+   // public Text UsernameTXT;
     void Awake()
     {
-        if(PlayerPrefs.GetString("UserName") == "")
+       /* if(PlayerPrefs.GetString("UserName") == "")
         {
             PlayerPrefs.SetString("UserName", "Guest");
             string path = Application.persistentDataPath + "/GuestStats.DCLXVI";
@@ -22,14 +22,11 @@ public class UserNamePanel : MonoBehaviour
                 LatestProgressSaver.SaveLatestProgress(0, 0, 0, 0, 0, 0, 0, 0, false);
                 StatSaver.SaveStats(NewStats);
             }
-        }
-
-
+        }*/
     }
-
     void Update()
     {
-        UsernameTXT.text = PlayerPrefs.GetString("UserName");
-        Cursor.visible = true;
+       /// UsernameTXT.text = PlayerPrefs.GetString("UserName");
+       // Cursor.visible = true;
     }
 }

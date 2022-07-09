@@ -26,6 +26,7 @@ public class PuseScript : MonoBehaviour
                 GlobalVolume.weight = 1f;
                 Paused = true;
                 Time.timeScale = 0f;
+                Cursor.visible = true;
             }
             else if (Paused)
             {
@@ -34,6 +35,7 @@ public class PuseScript : MonoBehaviour
                 GlobalVolume.weight = 0f;
                 Paused = false;
                 Time.timeScale = 1f;
+                Cursor.visible = false;
             }
         }
     }
@@ -43,10 +45,12 @@ public class PuseScript : MonoBehaviour
         GlobalVolume.weight = 0f;
         Paused = false;
         Time.timeScale = 1f;
+        Cursor.visible = false;
     }
     public void Restart()
     {
         Time.timeScale = 1f;
+        Cursor.visible = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     public void ExitToMainMenu()

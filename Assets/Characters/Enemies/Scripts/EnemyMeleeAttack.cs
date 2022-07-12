@@ -21,7 +21,6 @@ public class EnemyMeleeAttack : MonoBehaviour
             Invoke("AttackDelay", 1);
             CanAttack = false;
         }
-
     }
     void AttackDelay()
     {

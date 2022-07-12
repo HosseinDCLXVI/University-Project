@@ -4,46 +4,50 @@ using UnityEngine;
 
 public class EnemyRangedAttack : MonoBehaviour
 {
-    public LayerMask Player;
-    public float Distance;
-    public Transform StartPoint;
-    public bool CanAttack=true;
-    public Animator EnemyAnimator;
-    public float Attack_Delay;
-    public GameObject FireBall;
-    public bool NearPlayer;
+    [SerializeField]private LayerMask Player;
+    [SerializeField]private float EnemyVisionDistance;
+    [SerializeField]private float Attack_Delay;
+    [SerializeField]private GameObject FireBall;
+
+    private bool CanAttackThePlayer=true;
+    private Animator EnemyAnimator;
+    [HideInInspector]public bool NearPlayer;
     void Start()
     {
-        
+        EnemyAnimator=GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        PlayerCheck();
+        SearchForPlayer();
         AttackController();
-        NearPlayer = GetComponent<EnemyPatrol>().NearPlayer;
+        KeepDistanceFromPlayer();
+        NearPlayer = GetComponent<EnemyPatrol>().CanAttackThePlayer;
     }
-    void PlayerCheck()
+    void SearchForPlayer()
     {
-        RaycastHit2D raycastHit= Physics2D.Raycast(StartPoint.position,StartPoint.TransformDirection(Vector2.left),Distance, Player);
+        RaycastHit2D raycastHit= Physics2D.Raycast(transform.position,transform.TransformDirection(Vector2.left),EnemyVisionDistance, Player);
         if(raycastHit)
         {
-            GetComponent<EnemyPatrol>().NearPlayer = true;
+            CanAttackThePlayer = true;
+            GetComponent<EnemyPatrol>().CanAttackThePlayer = true;
         }    
         else
         {
-            GetComponent<EnemyPatrol>().NearPlayer = false;
+            GetComponent<EnemyPatrol>().CanAttackThePlayer = false;
         }
+    }
+    void KeepDistanceFromPlayer()
+    {
+
     }
     void AttackController()
     {
-        if (NearPlayer && CanAttack)
+        if (NearPlayer && CanAttackThePlayer)
         {
             Invoke("AttackDelay", Attack_Delay);
-            CanAttack = false;
+            CanAttackThePlayer = false;
         }
-
     }
 
     void AttackDelay()
@@ -53,10 +57,10 @@ public class EnemyRangedAttack : MonoBehaviour
     void StopAttack()
     {
         EnemyAnimator.SetBool("Attack", false);
-        CanAttack = true;
+        CanAttackThePlayer = true;
     }
     void FireBallGenerator()
     {
-        Instantiate(FireBall, StartPoint.position, StartPoint.rotation);
+        Instantiate(FireBall, transform.position, transform.rotation);
     }    
 }

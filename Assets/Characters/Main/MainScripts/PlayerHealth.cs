@@ -6,27 +6,28 @@ using UnityEngine.Rendering.Universal;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public GameObject Player;
-    public Animator MainAnimator;
-    public GameObject HealthBar;
-    public GameObject GameOverCanvas;
-    public Volume BlurEffect;
-    public float MaxHealth = 100;
+    #region Inspector Variables
+    [Header("Health Settings")]
+    [SerializeField] private GameObject HealthBar;
+    [SerializeField] private GameObject GameOverCanvas;
+    [SerializeField] private float MaxHealth;
+    #endregion
+
+    private Animator MainAnimator;
+
+    [HideInInspector]public Volume BlurEffect;
     [HideInInspector]public float CurrentHealth;
+
     void Start()
     {
+        MainAnimator=GetComponent<Animator>();
         CurrentHealth = MaxHealth;
     }
 
-    // Update is called once per frame
     void Update()
     {
         HealthBarControll();
-        if (CurrentHealth <= 0)
-        {
-            MainAnimator.SetBool("Die", true);
-            DieFunc();
-        }
+        DeathFunc();
     }
 
     void HealthBarControll()
@@ -35,22 +36,28 @@ public class PlayerHealth : MonoBehaviour
         HealthBar.GetComponent<DisplayHealth>().CurrentHealth = CurrentHealth;
     }
 
-    public void PlayerDamage(int damage)
+    public void DeathFunc()
     {
-        CurrentHealth -= damage;
-        MainAnimator.SetTrigger("Hit");
+        if (CurrentHealth <= 0)
+        {
+            MainAnimator.SetBool("Die", true);
+            Destroy(this, 3);
+            Invoke("GameOver", 1);
+        }
 
-    }
-    public void DieFunc()
-    {
-        Destroy(Player, 3);
-        Invoke("GameOver", 1);
     }
     public void GameOver()
     {
         GameOverCanvas.SetActive(true);
         BlurEffect.weight = 1f;
         Time.timeScale = 0;
+    }
+
+    public void PlayerDamage(int damage) //gets called from enemy attack script
+    {
+        CurrentHealth -= damage;
+        MainAnimator.SetTrigger("Hit");
+
     }
 
 }

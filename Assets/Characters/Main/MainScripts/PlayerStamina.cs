@@ -4,51 +4,59 @@ using UnityEngine;
 
 public class PlayerStamina : MonoBehaviour
 {
-    public GameObject StaminaBar;
+    #region Inspector Variables
+    [Header("Stamina Settings")]
+    [SerializeField]private GameObject StaminaBar;
+    [SerializeField]private float MaxStamina;
+    [SerializeField]private float StaminaGainSpeed;
+    #endregion
 
-    public float MaxStamina = 100;
-    public float StaminaGainSpeed;
     [HideInInspector]public float CurrentStamina;
     void Start()
     {
         CurrentStamina = MaxStamina;
     }
 
-    // Update is called once per frame
+    #region Main Stamina Functions
     void Update()
     {
-        if (CurrentStamina < 100)
+        if (CurrentStamina == 0)
         {
-            if (CurrentStamina == 0)
-            {
-                Invoke("StaminaGain", 2);
-            }
-            else
-            {
-                StaminaGain();
-            }
+            Invoke("StaminaGain", 2);
         }
         else
         {
-            CurrentStamina = 100;
+            StaminaRegain();
+        }
+
+        StaminaNormalization();
+        StaminaBarControler();
+    }
+    private void StaminaNormalization() // Chech if stamina has the right amount 
+    {
+        if (CurrentStamina > MaxStamina)
+        {
+            CurrentStamina = MaxStamina;
         }
         if (CurrentStamina <= 0)
         {
             CurrentStamina = 0;
         }
-        StaminaBarControl();
     }
-    void StaminaGain()
+    private void StaminaRegain()
     {
         CurrentStamina += Time.deltaTime * StaminaGainSpeed;
     }
-    void StaminaBarControl()
+    private void StaminaBarControler()
     {
         StaminaBar.GetComponent<DisplaStamina>().MaxStamina = MaxStamina;
         StaminaBar.GetComponent<DisplaStamina>().CurrentStamina = CurrentStamina;
     }
+    #endregion
+    #region Animation Functions
     void StaminaFunc(float NeededStamina)
     {
         CurrentStamina -= NeededStamina;
     }
+    #endregion
 }

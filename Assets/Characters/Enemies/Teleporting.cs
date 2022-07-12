@@ -17,7 +17,7 @@ public class Teleporting : MonoBehaviour
         {
             foreach (GameObject PlayerZone in TeleportZones)
             {
-                if (Zone.GetComponent<EnemyZone>().EnemyIn==true && Zone.GetComponent<EnemyZone>().PlayerIn == false  && PlayerZone.GetComponent<EnemyZone>().EnemyIn == false && PlayerZone.GetComponent<EnemyZone>().PlayerIn == true)
+                if (Zone.GetComponent<EnemyZone>().EnemyIsInside==true && Zone.GetComponent<EnemyZone>().PlayerIsInside == false  && PlayerZone.GetComponent<EnemyZone>().EnemyIsInside == false && PlayerZone.GetComponent<EnemyZone>().PlayerIsInside == true)
                 {
                     // Teleport(Zone, PlayerZone);
                     Zone.GetComponent<EnemyZone>().Enemy.GetComponent<Animator>().SetBool("BackToLife", false);

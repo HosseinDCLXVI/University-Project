@@ -4,43 +4,51 @@ using UnityEngine;
 
 public class EnemyPatrol : MonoBehaviour
 {
-    public Transform EnemyTransform;
-    public Transform HealthCanvas;
-    public Animator EnemyAnimator;
-    public Vector2 EnemySpeed;
-    public bool GoRight;// comes from EnemyZone Script
-    public bool NearPlayer;
-    public bool Visited =false;
-    public GameObject EnemyItself;
 
-
-
+    private enum EnemyType {Ghost,Skeleton}
+    #region Inspector Variables
+    [SerializeField]private EnemyType enemyType;
+    [SerializeField]private Transform EnemyHealthCanvas;
+    [SerializeField]private Vector2 EnemyWalkingSpeed;
+    #endregion
+    #region Other Variables
+    private Animator EnemyAnimator;
+    [HideInInspector]public bool EnemyDirection, Right = true, Left = false;// comes from EnemyZone Script
+    [HideInInspector]public bool CanAttackThePlayer;
+    [HideInInspector]public bool Visited =false;
+    #endregion
+    #region Control Enemy Movement
+    private void Start()
+    {
+        EnemyAnimator = GetComponent<Animator>();
+    }
     void FixedUpdate()
     {
         EnemyMovement();
+        if(enemyType == EnemyType.Skeleton)
+        {
+            Debug.Log("dfs");
+        }
         if(Visited)
         {
             EnemyAnimator.SetBool("BackToLife", true);
         }
     }
-
-
-
     void EnemyMovement()
     {
-        if (!NearPlayer&&Visited)
+        if (!CanAttackThePlayer&&Visited)
         {
             EnemyAnimator.SetBool("Walk", true);
-            EnemyTransform.Translate(EnemySpeed * Time.deltaTime);
-            if (GoRight)
+            transform.Translate(EnemyWalkingSpeed * Time.deltaTime);
+            if (EnemyDirection==Right)
             {
-                EnemyTransform.eulerAngles = new Vector3(0, 0, 0);
-                HealthCanvas.eulerAngles = new Vector3(0, 0, 0);
+                transform.eulerAngles = new Vector3(0, 0, 0);
+                EnemyHealthCanvas.eulerAngles = new Vector3(0, 0, 0);
             }
-            else
+            else if(EnemyDirection==Left)
             {
-                EnemyTransform.eulerAngles = new Vector3(0, 180, 0);
-                HealthCanvas.eulerAngles=new Vector3(0,0, 0);
+                transform.eulerAngles = new Vector3(0, 180, 0);
+                EnemyHealthCanvas.eulerAngles=new Vector3(0,0, 0);
             }
         }
         else
@@ -48,15 +56,16 @@ public class EnemyPatrol : MonoBehaviour
             EnemyAnimator.SetBool("Walk", false);
         }
     }
-
+    #endregion
+    #region Check if enemy can attack the player
     private void OnTriggerEnter2D(Collider2D collision)//enemy stops movingg when near the player and attacks
     {
         if (collision.tag == "Player")
         {
-            EnemyMeleeAttack enemy = EnemyItself.GetComponent<EnemyMeleeAttack>();
+            EnemyMeleeAttack enemy = GetComponent<EnemyMeleeAttack>();
             if (enemy != null)
-            EnemyItself.GetComponent<EnemyMeleeAttack>().NearPlayer = true;
-            NearPlayer = true;
+            GetComponent<EnemyMeleeAttack>().NearPlayer = true;
+            CanAttackThePlayer = true;
         }
     }
 
@@ -64,15 +73,16 @@ public class EnemyPatrol : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            EnemyMeleeAttack enemy = EnemyItself.GetComponent<EnemyMeleeAttack>();
+            EnemyMeleeAttack enemy = GetComponent<EnemyMeleeAttack>();
             if (enemy != null)
-             EnemyItself.GetComponent<EnemyMeleeAttack>().NearPlayer = false;
-            NearPlayer = false;
+            GetComponent<EnemyMeleeAttack>().NearPlayer = false;
+            CanAttackThePlayer = false;
         }
     }
+    #endregion
 }
-        
 
 
-    
+
+
 

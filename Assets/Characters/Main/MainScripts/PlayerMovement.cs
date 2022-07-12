@@ -4,52 +4,68 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public GameObject Player;
-    public Animator MainAnimator;
-    public Rigidbody2D MainRB;
-    public Transform MainTransfrom;
-    [HideInInspector]public bool IsCrouch;
+    #region Inspector Variables
+    [Header("Movement Inputs")]
+    [SerializeField] private KeyCode MoveRightButton;
+    [SerializeField] private KeyCode MoveLeftButton;
+    [SerializeField] private KeyCode JumpButton;
+    [SerializeField] private KeyCode CrouchButton;
 
-    public Transform WallSlideBox;
-    public LayerMask WallLayer;
-    public Vector2 WallJumpVec;
-    public float WallSlideRadius;
-    private bool WallSliding = false;
+    [Space(5)]
+    [Header("Wall Jump Settings")]
+    [SerializeField] private Transform WallJumpCircleCenter;
+    [SerializeField] private float WallJumpCircleRadius;
+    [SerializeField] private LayerMask WallLayer;
+    [SerializeField] private Vector2 WallJumpForce;
 
-    public Vector2 JumpVec;
+    [Space(5)]
+    [Header("Running and Jump settings")]
+    [SerializeField] private Vector2 JumpForce;
+    [SerializeField] private Vector2 RunningSpeed;
+    #endregion
+
+    #region Other Variables
+    private Animator MainAnimator;
+    private Rigidbody2D MainRB;
+
+
+    [HideInInspector]public bool CanMove;
+    [HideInInspector]public bool IsOnTheGround;
+
+    private float CurrentStamina; //comes from PlayerStamina
+
     private bool Jump;
-    [HideInInspector]public bool OnTheGround = true;
-
-    public Vector2 RunningSpeed; 
     private bool MoveLeft;
     private bool MoveRight;
-    public bool CanMove = true;
-    //private bool isright = true;
+    [HideInInspector]public bool IsCrouch;//for Crouch Script
 
-    [HideInInspector] public float CurrentStamina; //comes from PlayerStamina
+    bool CharacterDirection, Right = true, Left = false; //Direction Controls
+    #endregion
 
-
-    private void Awake()
+    private void Start()
     {
-        Cursor.visible = false;
+        MainAnimator=GetComponent<Animator>();
+        MainRB=GetComponent<Rigidbody2D>();
+        CanMove = true;
+        IsOnTheGround = true;
     }
+
+    #region Input Control
     void Update()
     {
-        CurrentStamina = Player.GetComponent<PlayerStamina>().CurrentStamina;
-        if (Input.GetKey(KeyCode.D) && CanMove)
+        CurrentStamina = GetComponent<PlayerStamina>().CurrentStamina;
+        InputControl();
+    }
+
+    private void InputControl()
+    {
+        if (CanMove) //RUN
         {
-            MoveRight = true;
-            if (OnTheGround)
+            MoveRight=Input.GetKey(MoveRightButton);
+            MoveLeft=Input.GetKey(MoveLeftButton);
+            if (IsOnTheGround)
             {
-                MainAnimator.SetBool("Run", true);
-            }
-        }
-        else if (Input.GetKey(KeyCode.A) && CanMove)
-        {
-            MoveLeft = true;
-            if (OnTheGround)
-            {
-                MainAnimator.SetBool("Run", true);
+                MainAnimator.SetBool("Run", (MoveRight || MoveLeft));
             }
         }
         else
@@ -58,102 +74,113 @@ public class PlayerMovement : MonoBehaviour
             MoveLeft = false;
             MainAnimator.SetBool("Run", false);
         }
-        if (Input.GetKeyDown(KeyCode.W) && (OnTheGround || WallSliding) && CurrentStamina >= 7)
+
+        if (Input.GetKeyDown(JumpButton)&&(IsOnTheGround || WallSlideControl()) && CurrentStamina >= 7)//JUMP
         {
-            Jump = true;
+            Jump = true; //it will set to false after executing jump function
             MainAnimator.SetBool("Jump", true);
         }
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+
+        if (Input.GetKeyDown(CrouchButton))//Crouch
         {
             IsCrouch = !IsCrouch;
             MainAnimator.SetBool("IsCrouch", IsCrouch);
-        }
+        }       
     }
+    #endregion
+
+    #region Physical Movement Functions
     private void FixedUpdate()
     {
         JumpFunc();
-        MoveLeftFunc();
-        MoveRightFunc();
-        slidecontrol();
+        MoveFunc();
+        WallSlideControl();
     }
 
     void JumpFunc()
     {
         if (Jump)
         {
-            if (!WallSliding)
+            if (!WallSlideControl())
             {
-                MainRB.AddForce(JumpVec * Time.deltaTime);
+                MainRB.AddForce(JumpForce * Time.deltaTime);
             }
             else
             {
-                MainRB.AddForce(WallJumpVec * Time.deltaTime);
-                MainTransfrom.eulerAngles += new Vector3(0, 180, 0);
-                WallJumpVec.x = -WallJumpVec.x;
+                MainRB.AddForce(WallJumpForce * Time.deltaTime);
+                FlipTheCharacter(!CharacterDirection);
             }
-
-            Jump = !Jump;
+            Jump = false;
         }
     }
-    void MoveRightFunc()
+    void MoveFunc()
     {
         if (MoveRight)
         {
-            MainTransfrom.eulerAngles = new Vector3(0, 0, 0);
-            WallJumpVec.x = -10000;
-            MainTransfrom.Translate(RunningSpeed * Time.deltaTime);
+            FlipTheCharacter(Right);
+            transform.Translate(RunningSpeed * Time.deltaTime);
+        }
+        else if (MoveLeft)
+        {
+            FlipTheCharacter(Left);
+            transform.Translate(RunningSpeed * Time.deltaTime);
         }
     }
-    void MoveLeftFunc()
+    void FlipTheCharacter(bool Direction )
     {
-        if (MoveLeft)
+        if (Direction==Right)
         {
-            MainTransfrom.eulerAngles = new Vector3(0, 180, 0);
-            MainTransfrom.Translate(RunningSpeed * Time.deltaTime);
-            WallJumpVec.x = 10000;
+             transform.eulerAngles = new Vector3(0, 0, 0);
+             WallJumpForce.x = -10000;
+             CharacterDirection = Right;
+        }
+        else if (Direction==Left)
+        {
+            transform.eulerAngles = new Vector3(0, 180, 0);
+            WallJumpForce.x = 10000;
+            CharacterDirection = Left;
         }
     }
-    void slidecontrol()
+    #endregion
+
+    #region Wall And Ground Detection
+    private bool WallSlideControl()
     {
-        Collider2D WallDetector = Physics2D.OverlapCircle(WallSlideBox.position, WallSlideRadius, WallLayer);
-        if (WallDetector != null && !OnTheGround)
-        {
-            MainAnimator.SetBool("WallSlide", true);
-            WallSliding = true;
-        }
-        else
-        {
-            MainAnimator.SetBool("WallSlide", false);
-            WallSliding = false;
-        }
+        Collider2D WallDetector = Physics2D.OverlapCircle(WallJumpCircleCenter.position, WallJumpCircleRadius, WallLayer);
+        bool DoSlide = (WallDetector != null && !IsOnTheGround);
+        MainAnimator.SetBool("WallSlide", DoSlide);
+        return (DoSlide);
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(WallJumpCircleCenter.position, WallJumpCircleRadius);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Ground" || collision.tag == "ETop")
         {
-            OnTheGround = true;
+            IsOnTheGround = true;
             MainAnimator.SetBool("Falling", false);
             MainAnimator.SetBool("Jump", false);
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.tag == "Ground" || collision.tag == "Etop")
         {
-            OnTheGround = false;
+            IsOnTheGround = false;
             MainAnimator.SetBool("Run", false);
             MainAnimator.SetBool("Falling", true);
             MainAnimator.SetBool("SuperAttack", false);
         }
     }
+    #endregion
 
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(WallSlideBox.position, WallSlideRadius);
-    }
-
+    #region Movement Functions that are called from inside of the animations
     void StopMoving() //stops moving before attacks (from the animations)
     {
         CanMove = false;
@@ -163,7 +190,7 @@ public class PlayerMovement : MonoBehaviour
         CanMove = true;
         MainRB.gravityScale = 1;
     }
-    void ReadyForNextAttack() //for better input reading
+    void ReadyForNextAttack() //for better input reading (from the animations)
     {
         MainAnimator.SetBool("Attack", false);
         MainAnimator.SetBool("SuperAttack", false);
@@ -183,14 +210,14 @@ public class PlayerMovement : MonoBehaviour
     }
     void AirAttackGravityControl() 
     {
-        if (!OnTheGround)
+        if (!IsOnTheGround)
         {
             MainRB.gravityScale = 3;
         }
-        if (OnTheGround)
+        if (IsOnTheGround)
         {
             MainRB.gravityScale = 1;
         }
     }
-
+    #endregion
 }

@@ -5,13 +5,10 @@ using UnityEngine.UI;
 
 public class DisplaStamina : MonoBehaviour
 {
-    public Slider StaminaSlider;
-    public float MaxStamina;
-    public float CurrentStamina;
-    void Start()
-    {
-        
-    }
+    [SerializeField]private Slider StaminaSlider;
+
+    [HideInInspector]public float MaxStamina;
+    [HideInInspector]public float CurrentStamina;
 
     void Update()
     {

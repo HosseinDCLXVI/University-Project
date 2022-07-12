@@ -4,34 +4,42 @@ using UnityEngine;
 
 public class EnemyZone : MonoBehaviour
 {
-
-    public bool EnemyIn;
-    public bool PlayerIn;
-    public bool EnemyGoRight=true;
-    public float PlayerPosition;
-    public float EnemyPosition;
-    bool Visited;
+    #region Variables
     [HideInInspector] public GameObject Enemy; //for teleporting script
-    void Start()
-    {
-    }
+    [HideInInspector] public bool EnemyIsInside;
+    [HideInInspector] public bool PlayerIsInside;
+    [HideInInspector] public bool EnemyMovingDirection,Right=true,Left=false;
 
+    [SerializeField] private Vector2 BordersSize;
+    [SerializeField] LayerMask EnemyLayer;
+
+    private float PlayerPosition;
+    private float EnemyPosition;
+    private bool EnemyIsVisited;
+    private Collider2D ZoneCollider;
+    #endregion
+
+    #region Manage Enemy Movement in the zone
+    private void Start()
+    {
+        ZoneCollider = GetComponent<Collider2D>();
+    }
     void FixedUpdate()
     {
-        PlayerFollower();
-        Enemy.GetComponent<EnemyPatrol>().Visited = Visited;
+        EnemyFolowThePlayer();
+        Enemy.GetComponent<EnemyPatrol>().Visited = EnemyIsVisited;
     }
-    void PlayerFollower()
+    void EnemyFolowThePlayer()
     {
-        if (PlayerIn && EnemyIn)
+        if (PlayerIsInside && EnemyIsInside)
         {
             if (PlayerPosition - EnemyPosition > 0)
             {
-                EnemyGoRight = true;
+                EnemyMovingDirection = Right;
             }
             else if (PlayerPosition - EnemyPosition < 0)
             {
-                EnemyGoRight = false;
+                EnemyMovingDirection = Left;
             }
         }
     }
@@ -40,16 +48,21 @@ public class EnemyZone : MonoBehaviour
     {
         if (collision.tag == "Enemy")
         {
-            Enemy = null;
-            collision.GetComponent<CircleCollider2D>().enabled = false;
-            EnemyIn = false;
-            EnemyGoRight = !EnemyGoRight;
-            collision.GetComponent<EnemyPatrol>().GoRight = EnemyGoRight;
+            EnemyIsInside = false;
+            ReturnEnemyToTheZone(collision);
         }
         if (collision.tag == "Player")
         {
-            PlayerIn = false;
+            PlayerIsInside = false;
         }
+    }
+
+    void ReturnEnemyToTheZone(Collider2D collision)
+    {
+        Enemy = null;
+        collision.GetComponent<CircleCollider2D>().enabled = false;
+        EnemyMovingDirection = !EnemyMovingDirection;
+        collision.GetComponent<EnemyPatrol>().EnemyDirection = EnemyMovingDirection;
     }
      void OnTriggerStay2D(Collider2D collision)
     {
@@ -61,7 +74,7 @@ public class EnemyZone : MonoBehaviour
         {
             Enemy = collision.gameObject;
             EnemyPosition = collision.GetComponent<Transform>().position.x;
-            collision.GetComponent<EnemyPatrol>().GoRight = EnemyGoRight;
+            collision.GetComponent<EnemyPatrol>().EnemyDirection = EnemyMovingDirection;
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -70,14 +83,43 @@ public class EnemyZone : MonoBehaviour
         {
             Enemy = collision.gameObject;
             collision.GetComponent<CircleCollider2D>().enabled = true;
-            EnemyIn = true;
+            EnemyIsInside = true;
         }
         if (collision.tag == "Player")
         {
-            PlayerIn = true;
-            Visited = true;
+            PlayerIsInside = true;
+            EnemyIsVisited = true;
         }
     }
-    
-    
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Vector2 RightBorderPosition = new Vector2(transform.position.x + ZoneCollider.bounds.size.x / 2, transform.position.y);
+        Vector2 LeftBorderPosition = new Vector2(transform.position.x - ZoneCollider.bounds.size.x / 2, transform.position.y);
+
+        Gizmos.DrawWireCube(RightBorderPosition, BordersSize);
+        Gizmos.DrawWireCube(LeftBorderPosition, BordersSize);
+    }
+
+    void EnemyReachTheBorder()
+    {
+        Vector2 RightBorderPosition = new Vector2(transform.position.x + ZoneCollider.bounds.size.x / 2, transform.position.y);
+        Vector2 LeftBorderPosition = new Vector2(transform.position.x - ZoneCollider.bounds.size.x / 2, transform.position.y);
+
+        Collider2D[] EnemiesInTheRightBorder = Physics2D.OverlapBoxAll(RightBorderPosition, BordersSize,EnemyLayer);
+        foreach (Collider2D Enemy in EnemiesInTheRightBorder)
+        {
+            
+        }
+
+        Collider2D[] EnemiesInTheLeftBorder = Physics2D.OverlapBoxAll(LeftBorderPosition, BordersSize, EnemyLayer);
+        foreach (Collider2D Enemy in EnemiesInTheLeftBorder)
+        {
+
+        }
+    }
+    #endregion
 }

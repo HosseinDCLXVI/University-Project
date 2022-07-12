@@ -5,15 +5,11 @@ using UnityEngine.UI;
 
 public class DisplayHealth : MonoBehaviour
 {
-    public Slider HealthSlider;
-    public float MaxHealth;
-    public float CurrentHealth;
-    void Start()
-    {
-        
-    }
+    [SerializeField]private Slider HealthSlider;
 
-    // Update is called once per frame
+    [HideInInspector]public float MaxHealth;
+    [HideInInspector]public float CurrentHealth;
+
     void Update()
     {
         HealthSlider.maxValue = MaxHealth;

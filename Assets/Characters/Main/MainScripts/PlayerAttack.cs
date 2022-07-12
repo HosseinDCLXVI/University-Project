@@ -3,42 +3,68 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
-{   
-    public GameObject Player;
-    public Animator MainAnimator;
+{
+    #region Inspector Variables
+    [Header("Attack Inputs")]
+    [SerializeField] private KeyCode LightAttackButton;
+    [SerializeField] private KeyCode HeavyAttackButton;
+    [SerializeField] private KeyCode FireBallButton;
 
+    [Space(5)]
+    [Header("Melee Attack Settings")]
+    [SerializeField]private LayerMask EnemyLayer;
+    [SerializeField]private float HitBoxRadius;
+    [SerializeField]private Transform HitboxCenter;
+    [SerializeField] private int LightAttackRquiredStamina;
+    [SerializeField] private int HeavyAttackRquiredStamina;
+    [SerializeField]private int FireBallRquiredStamina;
 
-    public LayerMask EnemyLayer;
-    public float HitBoxRadius;
-    public Transform HitboxCenter;
+    [Space(5)]
+    [Header("Ranged Attack Settings")]
+    [SerializeField]private GameObject Fireball;
+    [SerializeField]private Transform FireBallStartPoint;
+    #endregion
 
-    public GameObject Fireball;
-    public Transform FireBallStartPoint;
+    #region Other Variables
+     private Animator MainAnimator;
 
      private float CurrentStamina; //comes from PlayerStamina
-     private bool OnTheGround; //comes from PlayerMovement
+     private bool IsOnTheGround; //comes from PlayerMovement
 
     GameObject KillCheck;
+    #endregion
 
+    private void Start()
+    {
+        MainAnimator = GetComponent<Animator>();
+    }
 
+    #region Input Control
     void Update()
     {
-        OnTheGround=Player.GetComponent<PlayerMovement>().OnTheGround;
-        CurrentStamina=Player.GetComponent<PlayerStamina>().CurrentStamina;
-        if (Input.GetMouseButtonDown(0) && CurrentStamina >= 10)
+        IsOnTheGround=GetComponent<PlayerMovement>().IsOnTheGround;
+        CurrentStamina=GetComponent<PlayerStamina>().CurrentStamina;
+        InputControl();
+    }
+    private void InputControl()
+    {
+        if (Input.GetKeyDown(LightAttackButton) && CurrentStamina >= LightAttackRquiredStamina)
         {
             MainAnimator.SetBool("Attack", true);
         }
-        if (Input.GetMouseButtonDown(1) && !OnTheGround && CurrentStamina >= 30)
+        if (Input.GetKeyDown(HeavyAttackButton) && !IsOnTheGround && CurrentStamina >= HeavyAttackRquiredStamina)
         {
             MainAnimator.SetTrigger("SuperAttack");
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && OnTheGround && CurrentStamina >= 40)
+        if (Input.GetKeyDown(FireBallButton) && IsOnTheGround && CurrentStamina >= FireBallRquiredStamina)
         {
             MainAnimator.SetBool("Cast", true);
         }
     }
+    #endregion
+
+    #region Main Attack Functions (They get called from the inside of the animations)
     public void AttackFunc(float Damage) //animation function
     {
         Collider2D[] Enemy = Physics2D.OverlapCircleAll(HitboxCenter.position, HitBoxRadius, EnemyLayer);
@@ -63,6 +89,7 @@ public class PlayerAttack : MonoBehaviour
         Instantiate(Fireball, FireBallStartPoint.position, FireBallStartPoint.rotation);
         MainAnimator.SetBool("Cast", false);
     }
+    #endregion
 
     void OnDrawGizmosSelected()
     {

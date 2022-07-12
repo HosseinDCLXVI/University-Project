@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
-    public GameObject Character;
-    public Camera MainCamera;
-    public Vector3 Offset=new Vector3(3,3,0);
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    [SerializeField]private GameObject Character;
+    [SerializeField]private Camera MainCamera;
+    [SerializeField]private Vector3 Offset=new Vector3(5,4,-10);
     private void FixedUpdate()
     {
         MainCamera.transform.position = Character.transform.position + Offset;

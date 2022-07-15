@@ -11,8 +11,16 @@ public class EnemyZone : MonoBehaviour
     private float PlayerPosition;
     private float EnemyPosition;
     private bool EnemyIsVisited;
-    #endregion  
 
+    Collider2D ZoneColider;
+    #endregion
+
+    private void Update()
+    {
+        ZoneColider = GetComponent<Collider2D>();
+        Enemy.GetComponent<EnemyController>().ZonesRightBorder = ZoneColider.transform.position.x + ZoneColider.bounds.size.x / 2;
+        Enemy.GetComponent<EnemyController>().ZonesLeftBorder = ZoneColider.transform.position.x - ZoneColider.bounds.size.x / 2;
+    }
 
     #region Main
     private void OnTriggerExit2D(Collider2D collision)

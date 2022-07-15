@@ -10,20 +10,23 @@ public class EnemyPatrol : MonoBehaviour
     [SerializeField]private EnemyController EnemyControllerScript;
     [SerializeField]private Transform EnemyHealthCanvas;
     [SerializeField]private Vector2 EnemyWalkingSpeed;
+    [SerializeField]private Vector2 BackwardWalkingSpeed;
     [SerializeField]private float EnemyVisionDistance;
     [SerializeField]private float EnemyBackwardVisionDistance; //
     [SerializeField]private LayerMask PlayerLayer;
+    [SerializeField]private float InZoneTeleportDelay;
     #endregion
 
     #region Other Variables
     private Animator EnemyAnimator;
     [HideInInspector]public bool EnemyDirection, Right = true, Left = false;// comes from EnemyZone Script
-    [HideInInspector]public bool EnemyInTheRightBorder;
-    [HideInInspector]public bool EnemyInTheLeftBorder;
+    //[HideInInspector]public bool EnemyInTheRightBorder;
+    //[HideInInspector]public bool EnemyInTheLeftBorder;
     [HideInInspector]public bool EnemyCanSeeThePlayer;
     [HideInInspector]public bool CanMove;
     [HideInInspector]public bool EnemyIsAwareOfThePlayer;
-    [HideInInspector]public bool GoOutOfZoneBackwards;
+    [HideInInspector]public bool GotOutOfZoneBackwards;
+    private float TimeInTheBorder = 0;
 
 
     #region Attack Variables
@@ -56,10 +59,14 @@ public class EnemyPatrol : MonoBehaviour
         CheckIfEnemyCanSeeThePlayer();
         EnemyFolowThePlayer();
 
-        //if (EnemyControllerScript.IsRanged)
-        //{
-        //    KeepDistanceFromPlayer();
-        //}
+        if (EnemyControllerScript.IsRanged)
+        {
+            KeepDistanceFromPlayer();
+        }
+        if(EnemyControllerScript.CanTeleportInTheZone)
+        {
+            InZoneTeleport();
+        }
     }
     private void SyncDataWithControlScript()
     {
@@ -118,8 +125,8 @@ public class EnemyPatrol : MonoBehaviour
     {
         if (EnemyIsInsideTheZone)
             return;
-
-       // if (!GoOutOfZoneBackwards)
+        ///
+        if (!GotOutOfZoneBackwards)
         EnemyDirection = !EnemyDirection;
 
         CanMove = true;   
@@ -177,58 +184,66 @@ public class EnemyPatrol : MonoBehaviour
         }
     }
     #endregion
-    void KeepDistanceFromPlayer()///////////////////////
+    void KeepDistanceFromPlayer()
     {
-        /*
-            if (PlayerPositionInTheZone - EnemyPositionInTheZone <= EnemyControllerScript.EnemyAttackRange)
-            {
-
-            }
-            else if(PlayerPositionInTheZone - EnemyPositionInTheZone <= -EnemyControllerScript.EnemyAttackRange)
-            {
-
-            }*/
-        /*////////////////
+        
             if (EnemyIsAwareOfThePlayer)
                 if (Mathf.Abs(PlayerPositionInTheZone - EnemyPositionInTheZone) <= EnemyControllerScript.EnemyAttackRange)
                 {
-                    if (EnemyIsInsideTheZone)
+                    if (EnemyControllerScript.ZonesLeftBorder <= transform.position.x && transform.position.x<=EnemyControllerScript.ZonesRightBorder)
                     {
-                        Vector2 BackwardWalkingSpeed = EnemyWalkingSpeed * 2 / 3;
                         transform.Translate(BackwardWalkingSpeed * Time.deltaTime);
-                        GoOutOfZoneBackwards = false;
+                        GotOutOfZoneBackwards = false;
                     }
                     else
                     {
-                        GoOutOfZoneBackwards=true;
-                    }///////////////////
-                }*/
-
-            /*
-             *
-            if (PlayerPositionInTheZone - EnemyPositionInTheZone > 0)
-                8      -5 3
-
-            {
-                ???? ???
-                EnemyDirection = Right;
-            }
-            else if (PlayerPositionInTheZone - EnemyPositionInTheZone < 0)
-                ??? ????
-            {
-                EnemyDirection = Left;
-            }
-            if (EnemyControllerScript.EnemyAttackRange<)*/
-        
-
+                        GotOutOfZoneBackwards=true;
+                    }
+                }
     }
     void InZoneTeleport()
     {
-        if(EnemyControllerScript.CanTeleportInTheZone)
+        if (EnemyControllerScript.ZonesLeftBorder >= transform.position.x && GotOutOfZoneBackwards)
         {
-
+            TimeInTheBorder+=Time.deltaTime;
+            if(TimeInTheBorder >=InZoneTeleportDelay)
+            {
+                EnemyAnimator.Play("Vanish");
+                TimeInTheBorder = 0;
+                Invoke("TeleportToRight", 0.5f);
+            }
+        }
+        else if (EnemyControllerScript.ZonesRightBorder <= transform.position.x && GotOutOfZoneBackwards)
+        {
+            TimeInTheBorder += Time.deltaTime;
+            if (TimeInTheBorder >= InZoneTeleportDelay)
+            {
+                EnemyAnimator.Play("Vanish");
+                TimeInTheBorder = 0;
+                Invoke("TeleportToLeft", 0.5f);
+            }
+        }
+        else
+        {
+            TimeInTheBorder = 0;
         }
     }
+    void TeleportToRight()
+    {
+        transform.position = new Vector2(EnemyControllerScript.ZonesRightBorder, transform.position.y);
+        EnemyDirection = !EnemyDirection;
+        GotOutOfZoneBackwards = false;
+        EnemyAnimator.Play("GhostAppears");
+
+    }
+    void TeleportToLeft()
+    {
+        transform.position = new Vector2(EnemyControllerScript.ZonesLeftBorder, transform.position.y);
+        EnemyDirection = !EnemyDirection;
+        GotOutOfZoneBackwards = false;
+        EnemyAnimator.Play("GhostAppears");
+    }
+
 }
 
 

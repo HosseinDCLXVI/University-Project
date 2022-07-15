@@ -409,7 +409,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3432713560729830184}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: -8.703346}
+  m_LocalPosition: {x: 0.081, y: 0.056, z: -8.703346}
   m_LocalScale: {x: 0.33333334, y: 0.33333334, z: 1}
   m_Children: []
   m_Father: {fileID: 3432713561238628081}
@@ -674,11 +674,13 @@ MonoBehaviour:
   EnemyAttackScript: {fileID: 2459737842781533539}
   CloseEnoughToAttack: 0
   EnemyAttackRange: 0
+  EnemyIsAwake: 0
   PlayerIsInsideTheZone: 0
   EnemyIsInsideTheZone: 0
   PlayerPositionInTheZone: 0
   EnemyPositionInTheZone: 0
-  EnemyIsAwake: 0
+  ZonesRightBorder: 0
+  ZonesLeftBorder: 0
   CanTeleportInTheZone: 0
   CanTeleportBetweenTheZones: 0
   CanPatrol: 0
@@ -697,22 +699,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyControllerScript: {fileID: 6193642581354649783}
-  EnemyHealthCanvas: {fileID: 0}
-  EnemyWalkingSpeed: {x: 1, y: 0}
-  EnemyVisionDistance: 5
+  EnemyHealthCanvas: {fileID: 3432713560013975986}
+  EnemyWalkingSpeed: {x: 2, y: 0}
+  BackwardWalkingSpeed: {x: -1, y: 0}
+  EnemyVisionDistance: 7
   EnemyBackwardVisionDistance: 2
   PlayerLayer:
     serializedVersion: 2
     m_Bits: 128
+  InZoneTeleportDelay: 3
   EnemyDirection: 0
   Right: 1
   Left: 0
-  EnemyInTheRightBorder: 0
-  EnemyInTheLeftBorder: 0
   EnemyCanSeeThePlayer: 0
   CanMove: 0
   EnemyIsAwareOfThePlayer: 0
-  GoOutOfZoneBackwards: 0
+  GotOutOfZoneBackwards: 0
   CloseEnoughToAttack: 0
 --- !u!114 &2459737842781533539
 MonoBehaviour:
@@ -730,8 +732,9 @@ MonoBehaviour:
   PlayerLayer:
     serializedVersion: 2
     m_Bits: 128
-  Attack_Delay: 1
+  Attack_Delay: 1.5
   HitBoxCenter: {fileID: 0}
   HitBoxRadius: 0
-  EnemyAttackRange: 5
+  EnemyAttackRange: 6
   FireBall: {fileID: 7654989959361240004, guid: 20c78ea3f23c6c74a8cd288cc2ae99e0, type: 3}
+  FireBallStartPoint: {fileID: 3432713560729830231}

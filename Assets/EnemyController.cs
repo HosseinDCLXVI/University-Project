@@ -17,11 +17,14 @@ public class EnemyController : MonoBehaviour
     #endregion
 
     #region Zone Variables
+    public bool EnemyIsAwake = false;
     [HideInInspector]public bool PlayerIsInsideTheZone;
     [HideInInspector]public bool EnemyIsInsideTheZone;
     [HideInInspector]public float PlayerPositionInTheZone;
     [HideInInspector]public float EnemyPositionInTheZone;
-    [HideInInspector]public bool EnemyIsAwake = false;
+
+    [HideInInspector] public float ZonesRightBorder;
+    [HideInInspector] public float ZonesLeftBorder;
     #endregion
 
 

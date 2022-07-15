@@ -15,6 +15,7 @@ public class EnemyAttack : MonoBehaviour
     [Header("Ranged Attack Variables")]
     [SerializeField]private float EnemyAttackRange;
     [SerializeField]private GameObject FireBall;
+    [SerializeField] private Transform FireBallStartPoint;
 
 
     private Animator EnemyAnimator;
@@ -89,6 +90,8 @@ public class EnemyAttack : MonoBehaviour
             if (collision.tag == "Player")
             {
                 CloseEnoughToAttack = true;
+                EnemyAnimator.SetBool("Melee", true);
+
             }
         }
     }
@@ -100,6 +103,7 @@ public class EnemyAttack : MonoBehaviour
             if (collision.tag == "Player")
             {
                 CloseEnoughToAttack = false;
+                EnemyAnimator.SetBool("Melee", false);
             }
         }
     }
@@ -121,7 +125,7 @@ public class EnemyAttack : MonoBehaviour
 
     void FireBallGenerator()
     {
-        Instantiate(FireBall, transform.position, transform.rotation);
+        Instantiate(FireBall, new Vector3( FireBallStartPoint.position.x,FireBallStartPoint.transform.position.y,transform.position.z), transform.rotation);
     }
     #endregion
 }

@@ -201,11 +201,13 @@ MonoBehaviour:
   EnemyAttackScript: {fileID: 2738593187670567488}
   CloseEnoughToAttack: 0
   EnemyAttackRange: 0
+  EnemyIsAwake: 0
   PlayerIsInsideTheZone: 0
   EnemyIsInsideTheZone: 0
   PlayerPositionInTheZone: 0
   EnemyPositionInTheZone: 0
-  EnemyIsAwake: 0
+  ZonesRightBorder: 0
+  ZonesLeftBorder: 0
   CanTeleportInTheZone: 0
   CanTeleportBetweenTheZones: 0
   CanPatrol: 0
@@ -245,22 +247,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyControllerScript: {fileID: 1675264345380263353}
-  EnemyHealthCanvas: {fileID: 0}
+  EnemyHealthCanvas: {fileID: 6645655613281114328}
   EnemyWalkingSpeed: {x: 1, y: 0}
+  BackwardWalkingSpeed: {x: 0, y: 0}
   EnemyVisionDistance: 5
   EnemyBackwardVisionDistance: 2
   PlayerLayer:
     serializedVersion: 2
     m_Bits: 128
+  InZoneTeleportDelay: 0
   EnemyDirection: 0
   Right: 1
   Left: 0
-  EnemyInTheRightBorder: 0
-  EnemyInTheLeftBorder: 0
   EnemyCanSeeThePlayer: 0
   CanMove: 0
   EnemyIsAwareOfThePlayer: 0
-  GoOutOfZoneBackwards: 0
+  GotOutOfZoneBackwards: 0
   CloseEnoughToAttack: 0
 --- !u!1 &6645655611985617856
 GameObject:

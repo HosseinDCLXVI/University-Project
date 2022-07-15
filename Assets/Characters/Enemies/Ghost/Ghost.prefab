@@ -483,12 +483,13 @@ GameObject:
   - component: {fileID: 3432713561238628081}
   - component: {fileID: 3432713561238628082}
   - component: {fileID: 3432713561238628083}
-  - component: {fileID: 3432713561238628093}
-  - component: {fileID: 3432713561238628094}
   - component: {fileID: 3432713561238628091}
   - component: {fileID: 3432713561238628092}
   - component: {fileID: 3432713561238628090}
-  - component: {fileID: 3432713561238628080}
+  - component: {fileID: 3432713561238628094}
+  - component: {fileID: 6193642581354649783}
+  - component: {fileID: 3432713561238628093}
+  - component: {fileID: 2459737842781533539}
   m_Layer: 3
   m_Name: Ghost
   m_TagString: Enemy
@@ -584,45 +585,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &3432713561238628093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3432713561238628084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1710e1c8d0e85b94d9503f15b05e2db4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnemyTransform: {fileID: 3432713561238628081}
-  HealthCanvas: {fileID: 3432713560013975986}
-  EnemyAnimator: {fileID: 3432713561238628083}
-  EnemySpeed: {x: 1, y: 0}
-  GoRight: 0
-  NearPlayer: 0
-  Visited: 0
-  EnemyItself: {fileID: 3432713561238628084}
---- !u!114 &3432713561238628094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3432713561238628084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f244990838897a4e98557e6e3ecbf6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnemyAnimator: {fileID: 3432713561238628083}
-  EnemyPrefab: {fileID: 3432713561238628084}
-  Etop: {fileID: 3432713561107865349}
-  EnemyHealthBar: {fileID: 3432713559443983227}
-  HealthBarCanvas: {fileID: 3432713560013975990}
-  EnemyMaxHealth: 200
-  EnemyCurrentHealth: 0
 --- !u!70 &3432713561238628091
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -676,7 +638,7 @@ CircleCollider2D:
   m_Offset: {x: 0.10384532, y: 0}
   serializedVersion: 2
   m_Radius: 0.12482353
---- !u!114 &3432713561238628080
+--- !u!114 &3432713561238628094
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -685,16 +647,91 @@ MonoBehaviour:
   m_GameObject: {fileID: 3432713561238628084}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4021a6f6cb6f107479e82ff409f080a1, type: 3}
+  m_Script: {fileID: 11500000, guid: 3f244990838897a4e98557e6e3ecbf6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player:
+  EnemyAnimator: {fileID: 3432713561238628083}
+  EnemyPrefab: {fileID: 3432713561238628084}
+  Etop: {fileID: 3432713561107865349}
+  EnemyHealthBar: {fileID: 3432713559443983227}
+  HealthBarCanvas: {fileID: 3432713560013975990}
+  EnemyMaxHealth: 200
+  EnemyCurrentHealth: 50
+--- !u!114 &6193642581354649783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3432713561238628084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 741ba85bf4934ed41aee67f08aaa6853, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyType: 0
+  EnemyPatrolScript: {fileID: 3432713561238628093}
+  EnemyAttackScript: {fileID: 2459737842781533539}
+  CloseEnoughToAttack: 0
+  EnemyAttackRange: 0
+  PlayerIsInsideTheZone: 0
+  EnemyIsInsideTheZone: 0
+  PlayerPositionInTheZone: 0
+  EnemyPositionInTheZone: 0
+  EnemyIsAwake: 0
+  CanTeleportInTheZone: 0
+  CanTeleportBetweenTheZones: 0
+  CanPatrol: 0
+  IsRanged: 0
+  IsMelee: 0
+--- !u!114 &3432713561238628093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3432713561238628084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1710e1c8d0e85b94d9503f15b05e2db4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnemyControllerScript: {fileID: 6193642581354649783}
+  EnemyHealthCanvas: {fileID: 0}
+  EnemyWalkingSpeed: {x: 1, y: 0}
+  EnemyVisionDistance: 5
+  EnemyBackwardVisionDistance: 2
+  PlayerLayer:
     serializedVersion: 2
     m_Bits: 128
-  Distance: 9
-  StartPoint: {fileID: 3432713560729830231}
-  CanAttack: 1
-  EnemyAnimator: {fileID: 3432713561238628083}
-  Attack_Delay: 3
+  EnemyDirection: 0
+  Right: 1
+  Left: 0
+  EnemyInTheRightBorder: 0
+  EnemyInTheLeftBorder: 0
+  EnemyCanSeeThePlayer: 0
+  CanMove: 0
+  EnemyIsAwareOfThePlayer: 0
+  GoOutOfZoneBackwards: 0
+  CloseEnoughToAttack: 0
+--- !u!114 &2459737842781533539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3432713561238628084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d4588b05a1250842908d46cd0215fcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnemyControllerScript: {fileID: 6193642581354649783}
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  Attack_Delay: 1
+  HitBoxCenter: {fileID: 0}
+  HitBoxRadius: 0
+  EnemyAttackRange: 5
   FireBall: {fileID: 7654989959361240004, guid: 20c78ea3f23c6c74a8cd288cc2ae99e0, type: 3}
-  NearPlayer: 0

@@ -22,7 +22,7 @@ public class EnemyRangedAttack : MonoBehaviour
         SearchForPlayer();
         AttackController();
         KeepDistanceFromPlayer();
-        NearPlayer = GetComponent<EnemyPatrol>().CanAttackThePlayer;
+        //NearPlayer = GetComponent<EnemyPatrol>().CloseEnoughToAttack;
     }
     void SearchForPlayer()
     {
@@ -30,11 +30,11 @@ public class EnemyRangedAttack : MonoBehaviour
         if(raycastHit)
         {
             CanAttackThePlayer = true;
-            GetComponent<EnemyPatrol>().CanAttackThePlayer = true;
+            GetComponent<EnemyPatrol>().CloseEnoughToAttack = true;
         }    
         else
         {
-            GetComponent<EnemyPatrol>().CanAttackThePlayer = false;
+            GetComponent<EnemyPatrol>().CloseEnoughToAttack = false;
         }
     }
     void KeepDistanceFromPlayer()

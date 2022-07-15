@@ -154,4 +154,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9100900015d1054da627e7da25462e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FireBallSpeed: {x: -5, y: 0}
+  FireBallSpeed: {x: 5, y: 0}

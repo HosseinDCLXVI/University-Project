@@ -70,9 +70,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0d9d965bd7215440801f82029bd4677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyIn: 0
-  PlayerIn: 0
-  EnemyGoRight: 1
-  PlayerPosition: 0
-  EnemyPosition: 0
   Enemy: {fileID: 0}
+  EnemyIsInside: 0
+  PlayerIsInside: 0
+  EnemyMovingDirection: 0
+  Right: 1
+  Left: 0
+  BordersSize: {x: 1, y: 2.3}
+  EnemyLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  ZoneCollider: {fileID: 8093213741164593243}

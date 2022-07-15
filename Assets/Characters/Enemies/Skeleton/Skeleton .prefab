@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 6645655611705757006}
   - component: {fileID: 6645655611705757007}
   - component: {fileID: 6645655611705757004}
-  - component: {fileID: 6645655611705757005}
+  - component: {fileID: 1675264345380263353}
+  - component: {fileID: 2738593187670567488}
   - component: {fileID: 6645655611705757002}
   m_Layer: 3
   m_Name: 'Skeleton '
@@ -183,7 +184,7 @@ MonoBehaviour:
   HealthBarCanvas: {fileID: 6645655613281114329}
   EnemyMaxHealth: 100
   EnemyCurrentHealth: 0
---- !u!114 &6645655611705757005
+--- !u!114 &1675264345380263353
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -192,17 +193,45 @@ MonoBehaviour:
   m_GameObject: {fileID: 6645655611705757003}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fc8b1e35d9d4cc4a82911171abbd9b6, type: 3}
+  m_Script: {fileID: 11500000, guid: 741ba85bf4934ed41aee67f08aaa6853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyAnimator: {fileID: 6645655611705756992}
-  HitBoxCenter: {fileID: 6645655612611613820}
+  enemyType: 1
+  EnemyPatrolScript: {fileID: 6645655611705757002}
+  EnemyAttackScript: {fileID: 2738593187670567488}
+  CloseEnoughToAttack: 0
+  EnemyAttackRange: 0
+  PlayerIsInsideTheZone: 0
+  EnemyIsInsideTheZone: 0
+  PlayerPositionInTheZone: 0
+  EnemyPositionInTheZone: 0
+  EnemyIsAwake: 0
+  CanTeleportInTheZone: 0
+  CanTeleportBetweenTheZones: 0
+  CanPatrol: 0
+  IsRanged: 0
+  IsMelee: 0
+--- !u!114 &2738593187670567488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6645655611705757003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d4588b05a1250842908d46cd0215fcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnemyControllerScript: {fileID: 1675264345380263353}
   PlayerLayer:
     serializedVersion: 2
     m_Bits: 128
+  Attack_Delay: 1
+  HitBoxCenter: {fileID: 6645655612611613820}
   HitBoxRadius: 0.6
-  CanAttack: 1
-  NearPlayer: 0
+  EnemyAttackRange: 0
+  FireBall: {fileID: 0}
 --- !u!114 &6645655611705757002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,14 +244,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1710e1c8d0e85b94d9503f15b05e2db4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyTransform: {fileID: 6645655611705756994}
-  HealthCanvas: {fileID: 6645655613281114328}
-  EnemyAnimator: {fileID: 6645655611705756992}
-  EnemySpeed: {x: 1, y: 0}
-  GoRight: 0
-  NearPlayer: 0
-  Visited: 0
-  EnemyItself: {fileID: 6645655611705757003}
+  EnemyControllerScript: {fileID: 1675264345380263353}
+  EnemyHealthCanvas: {fileID: 0}
+  EnemyWalkingSpeed: {x: 1, y: 0}
+  EnemyVisionDistance: 5
+  EnemyBackwardVisionDistance: 2
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  EnemyDirection: 0
+  Right: 1
+  Left: 0
+  EnemyInTheRightBorder: 0
+  EnemyInTheLeftBorder: 0
+  EnemyCanSeeThePlayer: 0
+  CanMove: 0
+  EnemyIsAwareOfThePlayer: 0
+  GoOutOfZoneBackwards: 0
+  CloseEnoughToAttack: 0
 --- !u!1 &6645655611985617856
 GameObject:
   m_ObjectHideFlags: 0

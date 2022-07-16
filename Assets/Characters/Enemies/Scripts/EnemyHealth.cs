@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public Animator EnemyAnimator;
-    public GameObject EnemyPrefab;
-    public GameObject Etop;
-    public GameObject EnemyHealthBar;
-    public GameObject HealthBarCanvas;
-    public float EnemyMaxHealth = 100;
-    public float EnemyCurrentHealth;
+    [SerializeField] private EnemyController EnemyControllerScript;
+    [SerializeField] private GameObject EnemyPrefab;
+    [SerializeField] private GameObject Etop;
+    [SerializeField] private GameObject EnemyHealthBar;
+    [SerializeField] private GameObject HealthBarCanvas;
+    [SerializeField] private float EnemyMaxHealth;
+    private float EnemyCurrentHealth;
+    private Animator EnemyAnimator;
     void Start()
     {
+        EnemyAnimator = GetComponent<Animator>();
         EnemyCurrentHealth = EnemyMaxHealth;
+        EnemyControllerScript.EnemyMaxHealth = EnemyMaxHealth;
+    }
+    private void Update()
+    {
+        EnemyControllerScript.EnemyCurrentHealth = EnemyCurrentHealth;
     }
 
     void FixedUpdate()

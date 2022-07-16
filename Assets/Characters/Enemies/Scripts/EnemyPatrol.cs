@@ -5,44 +5,48 @@ using UnityEngine;
 public class EnemyPatrol : MonoBehaviour
 {
 
-    private enum EnemyType {Ghost,Skeleton}
     #region Inspector Variables
     [SerializeField]private EnemyController EnemyControllerScript;
     [SerializeField]private Transform EnemyHealthCanvas;
+
+    [Header("Moving Speed Settings")]
     [SerializeField]private Vector2 EnemyWalkingSpeed;
     [SerializeField]private Vector2 BackwardWalkingSpeed;
-    [SerializeField]private float EnemyVisionDistance;
-    [SerializeField]private float EnemyBackwardVisionDistance; //
-    [SerializeField]private LayerMask PlayerLayer;
+    [Range(0f, 20f)]
     [SerializeField]private float InZoneTeleportDelay;
+
+    [Header("Vision Settings")]
+    [SerializeField]private LayerMask PlayerLayer;
+    [Range(3f, 10f)]
+    [SerializeField]private float EnemyVisionDistance;
+    [Range(1f, 4f)]
+    [SerializeField]private float EnemyBackwardVisionDistance;
+
+
     #endregion
 
-    #region Other Variables
+    #region Patrol Variables
     private Animator EnemyAnimator;
-    [HideInInspector]public bool EnemyDirection, Right = true, Left = false;// comes from EnemyZone Script
-    //[HideInInspector]public bool EnemyInTheRightBorder;
-    //[HideInInspector]public bool EnemyInTheLeftBorder;
-    [HideInInspector]public bool EnemyCanSeeThePlayer;
-    [HideInInspector]public bool CanMove;
-    [HideInInspector]public bool EnemyIsAwareOfThePlayer;
-    [HideInInspector]public bool GotOutOfZoneBackwards;
+    private bool EnemyDirection, Right = true, Left = false;
+    private bool EnemyCanSeeThePlayer;
+    private bool CanMove;
+    private bool EnemyIsAwareOfThePlayer;
+    private bool GotOutOfZoneBackwards;
     private float TimeInTheBorder = 0;
+    #endregion
 
 
     #region Attack Variables
-    [HideInInspector]public bool CloseEnoughToAttack;
+    private bool CloseEnoughToAttack;
     #endregion
 
     #region zone Variables
-    private bool EnemyIsAwake =false;
+     private bool EnemyIsAwake =false;
      private bool PlayerIsInsideTheZone;
      private bool EnemyIsInsideTheZone;
      private float PlayerPositionInTheZone;
      private float EnemyPositionInTheZone;
-
     #endregion
-    #endregion
-    #region Control Enemy Movement
     private void Start()
     {
         EnemyAnimator = GetComponent<Animator>();
@@ -59,15 +63,21 @@ public class EnemyPatrol : MonoBehaviour
         CheckIfEnemyCanSeeThePlayer();
         EnemyFolowThePlayer();
 
-        if (EnemyControllerScript.IsRanged)
+        if (EnemyControllerScript.CanWalkBackward && EnemyControllerScript.IsRanged)
         {
             KeepDistanceFromPlayer();
         }
+
         if(EnemyControllerScript.CanTeleportInTheZone)
         {
             InZoneTeleport();
         }
     }
+    void FixedUpdate()
+    {
+        WalkingFunc();
+    }
+    #region General Patrol Functions
     private void SyncDataWithControlScript()
     {
         CloseEnoughToAttack = EnemyControllerScript.CloseEnoughToAttack;
@@ -80,10 +90,7 @@ public class EnemyPatrol : MonoBehaviour
         EnemyPositionInTheZone = EnemyControllerScript.EnemyPositionInTheZone;
         #endregion
     }
-    void FixedUpdate()
-    {
-        WalkingFunc();
-    }
+
     void EnemyFolowThePlayer()
     {
         if (EnemyIsAwareOfThePlayer)
@@ -184,23 +191,27 @@ public class EnemyPatrol : MonoBehaviour
         }
     }
     #endregion
+    #region KeepDistanceFromPlayer
     void KeepDistanceFromPlayer()
     {
-        
-            if (EnemyIsAwareOfThePlayer)
-                if (Mathf.Abs(PlayerPositionInTheZone - EnemyPositionInTheZone) <= EnemyControllerScript.EnemyAttackRange)
+        if (EnemyIsAwareOfThePlayer)
+        {
+            if (Mathf.Abs(PlayerPositionInTheZone - EnemyPositionInTheZone) <= EnemyControllerScript.EnemyAttackRange)
+            {
+                if (EnemyControllerScript.ZonesLeftBorder <= transform.position.x && transform.position.x <= EnemyControllerScript.ZonesRightBorder)
                 {
-                    if (EnemyControllerScript.ZonesLeftBorder <= transform.position.x && transform.position.x<=EnemyControllerScript.ZonesRightBorder)
-                    {
-                        transform.Translate(BackwardWalkingSpeed * Time.deltaTime);
-                        GotOutOfZoneBackwards = false;
-                    }
-                    else
-                    {
-                        GotOutOfZoneBackwards=true;
-                    }
+                    transform.Translate(-BackwardWalkingSpeed * Time.deltaTime);
+                    GotOutOfZoneBackwards = false;
                 }
+                else
+                {
+                    GotOutOfZoneBackwards = true;
+                }
+            }
+        }
     }
+    #endregion
+    #region InZoneTeleport
     void InZoneTeleport()
     {
         if (EnemyControllerScript.ZonesLeftBorder >= transform.position.x && GotOutOfZoneBackwards)
@@ -243,7 +254,7 @@ public class EnemyPatrol : MonoBehaviour
         GotOutOfZoneBackwards = false;
         EnemyAnimator.Play("GhostAppears");
     }
-
+    #endregion
 }
 
 

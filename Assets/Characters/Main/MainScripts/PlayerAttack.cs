@@ -72,11 +72,11 @@ public class PlayerAttack : MonoBehaviour
         foreach (Collider2D SingleEnemy in Enemy)
         {
             SingleEnemy.GetComponent<EnemyHealth>().EnemyDamage(Damage);
-            if (SingleEnemy.GetComponent <EnemyHealth>().EnemyCurrentHealth<=0)
+            if (SingleEnemy.GetComponent <EnemyController>().EnemyCurrentHealth<=0)
             {
                 if (KillCheck!=SingleEnemy.gameObject) // so that multiple combo attacks on a dead enemy dont encrease the score
                 {
-                    GetComponent<ProgressManager>().KillPoints += SingleEnemy.GetComponent<EnemyHealth>().EnemyMaxHealth / 20;
+                    GetComponent<ProgressManager>().KillPoints += SingleEnemy.GetComponent<EnemyController>().EnemyMaxHealth / 20;
                     GetComponent<ProgressManager>().Totalkills += 1;
                 }
                 KillCheck = SingleEnemy.gameObject;

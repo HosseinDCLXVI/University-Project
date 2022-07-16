@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 6645655611705756993}
   - component: {fileID: 6645655611705757006}
   - component: {fileID: 6645655611705757007}
-  - component: {fileID: 6645655611705757004}
   - component: {fileID: 1675264345380263353}
+  - component: {fileID: 6645655611705757004}
   - component: {fileID: 2738593187670567488}
   - component: {fileID: 6645655611705757002}
   m_Layer: 3
@@ -165,25 +165,6 @@ CapsuleCollider2D:
   m_Offset: {x: -0.13983363, y: -0.07680082}
   m_Size: {x: 0.43, y: 0.8998246}
   m_Direction: 0
---- !u!114 &6645655611705757004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6645655611705757003}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f244990838897a4e98557e6e3ecbf6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnemyAnimator: {fileID: 6645655611705756992}
-  EnemyPrefab: {fileID: 6645655611705757003}
-  Etop: {fileID: 6645655612724335543}
-  EnemyHealthBar: {fileID: 6645655612542926640}
-  HealthBarCanvas: {fileID: 6645655613281114329}
-  EnemyMaxHealth: 100
-  EnemyCurrentHealth: 0
 --- !u!114 &1675264345380263353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,8 +178,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 1
-  EnemyPatrolScript: {fileID: 6645655611705757002}
-  EnemyAttackScript: {fileID: 2738593187670567488}
+  CanTeleportInTheZone: 0
+  CanTeleportBetweenTheZones: 0
+  CanPatrol: 0
+  IsRanged: 0
+  IsMelee: 0
+  CanWalkBackward: 0
+  EnemyMaxHealth: 0
+  EnemyCurrentHealth: 0
   CloseEnoughToAttack: 0
   EnemyAttackRange: 0
   EnemyIsAwake: 0
@@ -208,11 +195,24 @@ MonoBehaviour:
   EnemyPositionInTheZone: 0
   ZonesRightBorder: 0
   ZonesLeftBorder: 0
-  CanTeleportInTheZone: 0
-  CanTeleportBetweenTheZones: 0
-  CanPatrol: 0
-  IsRanged: 0
-  IsMelee: 0
+--- !u!114 &6645655611705757004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6645655611705757003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f244990838897a4e98557e6e3ecbf6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnemyControllerScript: {fileID: 1675264345380263353}
+  EnemyPrefab: {fileID: 6645655611705757003}
+  Etop: {fileID: 6645655612724335543}
+  EnemyHealthBar: {fileID: 6645655612542926640}
+  HealthBarCanvas: {fileID: 6645655613281114329}
+  EnemyMaxHealth: 100
 --- !u!114 &2738593187670567488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,6 +234,7 @@ MonoBehaviour:
   HitBoxRadius: 0.6
   EnemyAttackRange: 0
   FireBall: {fileID: 0}
+  FireBallStartPoint: {fileID: 0}
 --- !u!114 &6645655611705757002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,20 +251,12 @@ MonoBehaviour:
   EnemyHealthCanvas: {fileID: 6645655613281114328}
   EnemyWalkingSpeed: {x: 1, y: 0}
   BackwardWalkingSpeed: {x: 0, y: 0}
-  EnemyVisionDistance: 5
-  EnemyBackwardVisionDistance: 2
+  InZoneTeleportDelay: 0
   PlayerLayer:
     serializedVersion: 2
     m_Bits: 128
-  InZoneTeleportDelay: 0
-  EnemyDirection: 0
-  Right: 1
-  Left: 0
-  EnemyCanSeeThePlayer: 0
-  CanMove: 0
-  EnemyIsAwareOfThePlayer: 0
-  GotOutOfZoneBackwards: 0
-  CloseEnoughToAttack: 0
+  EnemyVisionDistance: 5
+  EnemyBackwardVisionDistance: 2
 --- !u!1 &6645655611985617856
 GameObject:
   m_ObjectHideFlags: 0

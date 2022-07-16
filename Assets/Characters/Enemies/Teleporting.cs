@@ -9,7 +9,6 @@ public class Teleporting : MonoBehaviour
     void Update()
     {
         TeleportCheck();
-        //teleport();
     }
     void TeleportCheck()
     {
@@ -36,10 +35,4 @@ public class Teleporting : MonoBehaviour
 
         Zone.GetComponent<EnemyZone>().Enemy = null;
     }
-    /*void Teleport(GameObject Zone,GameObject PlayerZone)
-    {
-        Zone.GetComponent<EnemyZone>().Enemy.transform.position = PlayerZone.transform.position;
-    }*/
-
-
 }

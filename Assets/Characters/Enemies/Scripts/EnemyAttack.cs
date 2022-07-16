@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
-    [SerializeField]private EnemyController EnemyControllerScript;
-    [SerializeField]private LayerMask PlayerLayer;
-    [SerializeField]private float Attack_Delay;
+    [SerializeField] private EnemyController EnemyControllerScript;
+    [SerializeField] private LayerMask PlayerLayer;
+    [Range(0f, 10f)]
+    [SerializeField] private float Attack_Delay;
 
     [Header("Melee Attack Variables")]
-    [SerializeField]private Transform HitBoxCenter;
-    [SerializeField]private float HitBoxRadius;
+    [SerializeField] private Transform HitBoxCenter;
+    [Range(0f, 5f)]
+    [SerializeField] private float HitBoxRadius;
 
     [Header("Ranged Attack Variables")]
-    [SerializeField]private float EnemyAttackRange;
-    [SerializeField]private GameObject FireBall;
+    [Range(3f, 10f)]
+    [SerializeField] private float EnemyAttackRange;
+    [SerializeField] private GameObject FireBall;
     [SerializeField] private Transform FireBallStartPoint;
 
 
@@ -22,19 +25,15 @@ public class EnemyAttack : MonoBehaviour
     private bool CanAttack = true;
     private bool CloseEnoughToAttack;
 
-
-
-
+    #region General Scripts  
     void Start()
     {
         EnemyAnimator=GetComponent<Animator>();
     }
     void Update()
     {
-
         AttackController();
         SyncData();
-
         if (EnemyControllerScript.IsRanged)
         {
             CheckIfCanAttack();
@@ -62,7 +61,7 @@ public class EnemyAttack : MonoBehaviour
         EnemyAnimator.SetBool("Attack", false);
         CanAttack = true;
     }
-
+    #endregion
     #region Melee Attack
     private void OnDrawGizmos()
     {
@@ -72,7 +71,6 @@ public class EnemyAttack : MonoBehaviour
             Gizmos.DrawWireSphere(HitBoxCenter.position, HitBoxRadius);
         }
     }
-
 
     void MeleeAttackDamage(int Damage)
     {

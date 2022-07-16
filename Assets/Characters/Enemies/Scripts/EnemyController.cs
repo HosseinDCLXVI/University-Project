@@ -6,10 +6,12 @@ public class EnemyController : MonoBehaviour
 {
     public enum EnemyType {Ghost,Skeleton}
     public EnemyType enemyType;
-    [SerializeField]private EnemyPatrol EnemyPatrolScript;
-    [SerializeField]private EnemyAttack EnemyAttackScript;
+    [HideInInspector]public bool CanTeleportInTheZone, CanTeleportBetweenTheZones, CanPatrol, IsRanged, IsMelee ,CanWalkBackward;
 
-
+    #region EnemyHealth Variables
+    [HideInInspector]public float EnemyMaxHealth;
+    [HideInInspector]public float EnemyCurrentHealth;
+    #endregion
 
     #region Attack Variables
     [HideInInspector]public bool CloseEnoughToAttack=false;
@@ -28,7 +30,6 @@ public class EnemyController : MonoBehaviour
     #endregion
 
 
-    [HideInInspector]public bool CanTeleportInTheZone, CanTeleportBetweenTheZones, CanPatrol, IsRanged, IsMelee;
     void Start()
     {
         if(enemyType==EnemyType.Ghost)
@@ -47,6 +48,7 @@ public class EnemyController : MonoBehaviour
         CanPatrol=true;
         IsRanged=true;
         IsMelee = false;
+        CanWalkBackward = true;
     }
     void EnemyIsSkeleton()
     {
@@ -55,9 +57,6 @@ public class EnemyController : MonoBehaviour
         CanPatrol = true;
         IsRanged = false;
         IsMelee = true;
-    }
-    void Update()
-    {
-        
+        CanWalkBackward = false;
     }
 }

@@ -6,21 +6,21 @@ public class EnemyPatrol : MonoBehaviour
 {
 
     #region Inspector Variables
-    [SerializeField]private EnemyController EnemyControllerScript;
-    [SerializeField]private Transform EnemyHealthCanvas;
+    [SerializeField] private EnemyController EnemyControllerScript;
+    [SerializeField] private Transform EnemyHealthCanvas;
 
     [Header("Moving Speed Settings")]
-    [SerializeField]private Vector2 EnemyWalkingSpeed;
-    [SerializeField]private Vector2 BackwardWalkingSpeed;
+    [SerializeField] private Vector2 EnemyWalkingSpeed;
+    [SerializeField] private Vector2 BackwardWalkingSpeed;
     [Range(0f, 20f)]
-    [SerializeField]private float InZoneTeleportDelay;
+    [SerializeField] private float InZoneTeleportDelay;
 
     [Header("Vision Settings")]
-    [SerializeField]private LayerMask PlayerLayer;
+    [SerializeField] private LayerMask PlayerLayer;
     [Range(3f, 10f)]
-    [SerializeField]private float EnemyVisionDistance;
+    [SerializeField] private float EnemyVisionDistance;
     [Range(1f, 4f)]
-    [SerializeField]private float EnemyBackwardVisionDistance;
+    [SerializeField] private float EnemyBackwardVisionDistance;
 
 
     #endregion
@@ -41,11 +41,11 @@ public class EnemyPatrol : MonoBehaviour
     #endregion
 
     #region zone Variables
-     private bool EnemyIsAwake =false;
-     private bool PlayerIsInsideTheZone;
-     private bool EnemyIsInsideTheZone;
-     private float PlayerPositionInTheZone;
-     private float EnemyPositionInTheZone;
+    private bool EnemyIsAwake = false;
+    private bool PlayerIsInsideTheZone;
+    private bool EnemyIsInsideTheZone;
+    private float PlayerPositionInTheZone;
+    private float EnemyPositionInTheZone;
     #endregion
     private void Start()
     {
@@ -68,7 +68,7 @@ public class EnemyPatrol : MonoBehaviour
             KeepDistanceFromPlayer();
         }
 
-        if(EnemyControllerScript.CanTeleportInTheZone)
+        if (EnemyControllerScript.CanTeleportInTheZone)
         {
             InZoneTeleport();
         }
@@ -84,9 +84,9 @@ public class EnemyPatrol : MonoBehaviour
 
         #region zone Variables
         EnemyIsAwake = EnemyControllerScript.EnemyIsAwake;
-        PlayerIsInsideTheZone =EnemyControllerScript.PlayerIsInsideTheZone;
-        EnemyIsInsideTheZone=EnemyControllerScript.EnemyIsInsideTheZone;
-        PlayerPositionInTheZone=EnemyControllerScript.PlayerPositionInTheZone;
+        PlayerIsInsideTheZone = EnemyControllerScript.PlayerIsInsideTheZone;
+        EnemyIsInsideTheZone = EnemyControllerScript.EnemyIsInsideTheZone;
+        PlayerPositionInTheZone = EnemyControllerScript.PlayerPositionInTheZone;
         EnemyPositionInTheZone = EnemyControllerScript.EnemyPositionInTheZone;
         #endregion
     }
@@ -134,27 +134,27 @@ public class EnemyPatrol : MonoBehaviour
             return;
         ///
         if (!GotOutOfZoneBackwards)
-        EnemyDirection = !EnemyDirection;
+            EnemyDirection = !EnemyDirection;
 
-        CanMove = true;   
+        CanMove = true;
         EnemyIsInsideTheZone = true;
-        EnemyControllerScript.EnemyIsInsideTheZone= EnemyIsInsideTheZone;       
+        EnemyControllerScript.EnemyIsInsideTheZone = EnemyIsInsideTheZone;
     }
     void WalkingFunc()
     {
-        if (!CloseEnoughToAttack&&EnemyIsAwake&&CanMove)
+        if (!CloseEnoughToAttack && EnemyIsAwake && CanMove)
         {
             EnemyAnimator.SetBool("Walk", true);
             transform.Translate(EnemyWalkingSpeed * Time.deltaTime);
-            if (EnemyDirection==Right)
+            if (EnemyDirection == Right)
             {
                 transform.eulerAngles = new Vector3(0, 0, 0);
                 EnemyHealthCanvas.eulerAngles = new Vector3(0, 0, 0);
             }
-            else if(EnemyDirection==Left)
+            else if (EnemyDirection == Left)
             {
                 transform.eulerAngles = new Vector3(0, 180, 0);
-                EnemyHealthCanvas.eulerAngles=new Vector3(0,0, 0);
+                EnemyHealthCanvas.eulerAngles = new Vector3(0, 0, 0);
             }
         }
         else
@@ -165,23 +165,23 @@ public class EnemyPatrol : MonoBehaviour
 
     void CheckIfEnemyCanSeeThePlayer()
     {
-        RaycastHit2D RaycastHit = Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.right), EnemyVisionDistance,PlayerLayer);
+        RaycastHit2D RaycastHit = Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.right), EnemyVisionDistance, PlayerLayer);
         if (RaycastHit)
         {
             EnemyCanSeeThePlayer = true;
-            EnemyIsAwareOfThePlayer=true;
+            EnemyIsAwareOfThePlayer = true;
         }
         else
         {
             EnemyCanSeeThePlayer = false;
         }
-        if(!EnemyControllerScript.PlayerIsInsideTheZone && !EnemyCanSeeThePlayer)
+        if (!EnemyControllerScript.PlayerIsInsideTheZone && !EnemyCanSeeThePlayer)
         {
             EnemyIsAwareOfThePlayer = false;
         }
 
-        RaycastHit2D BackwardRaycastHit = Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.left), EnemyBackwardVisionDistance,PlayerLayer);
-        if(BackwardRaycastHit)
+        RaycastHit2D BackwardRaycastHit = Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.left), EnemyBackwardVisionDistance, PlayerLayer);
+        if (BackwardRaycastHit)
         {
             if (PlayerIsInsideTheZone && EnemyIsInsideTheZone)
             {
@@ -216,8 +216,8 @@ public class EnemyPatrol : MonoBehaviour
     {
         if (EnemyControllerScript.ZonesLeftBorder >= transform.position.x && GotOutOfZoneBackwards)
         {
-            TimeInTheBorder+=Time.deltaTime;
-            if(TimeInTheBorder >=InZoneTeleportDelay)
+            TimeInTheBorder += Time.deltaTime;
+            if (TimeInTheBorder >= InZoneTeleportDelay)
             {
                 EnemyAnimator.Play("Vanish");
                 TimeInTheBorder = 0;
@@ -255,6 +255,12 @@ public class EnemyPatrol : MonoBehaviour
         EnemyAnimator.Play("GhostAppears");
     }
     #endregion
+
+    private void ChangeBodyType(RigidbodyType2D rigidbodyType2D)
+    {
+        Rigidbody2D EnemyRigidbody2D = GetComponent<Rigidbody2D>();
+        EnemyRigidbody2D.bodyType = rigidbodyType2D;
+    }
 }
 
 

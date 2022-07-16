@@ -35,6 +35,8 @@ public class EnemyHealth : MonoBehaviour
         if (EnemyCurrentHealth <= 0)
         {
             EnemyAnimator.SetBool("Die", true);
+            Rigidbody2D rigidbody2D =GetComponent<Rigidbody2D>();
+            rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
             DieFunc();
         }
     }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     #region Inspector Variables
+    [SerializeField]ProgressManager ProgressManagerScript;
+
     [Header("Movement Inputs")]
     [SerializeField] private KeyCode MoveRightButton;
     [SerializeField] private KeyCode MoveLeftButton;
@@ -28,18 +30,16 @@ public class PlayerMovement : MonoBehaviour
     private Animator MainAnimator;
     private Rigidbody2D MainRB;
 
+    private bool CanMove;
+    private bool IsOnTheGround;
 
-    [HideInInspector]public bool CanMove;
-    [HideInInspector]public bool IsOnTheGround;
-
-    private float CurrentStamina; //comes from PlayerStamina
+    private float CurrentStamina; 
 
     private bool Jump;
     private bool MoveLeft;
     private bool MoveRight;
-    [HideInInspector]public bool IsCrouch;//for Crouch Script
 
-    bool CharacterDirection, Right = true, Left = false; //Direction Controls
+    private bool Right = true, Left = false; //Direction Controls
     #endregion
 
     private void Start()
@@ -53,8 +53,14 @@ public class PlayerMovement : MonoBehaviour
     #region Input Control
     void Update()
     {
-        CurrentStamina = GetComponent<PlayerStamina>().CurrentStamina;
         InputControl();
+        SyncData();
+    }
+    void SyncData()
+    {
+        ProgressManagerScript.CanMove = CanMove;
+        ProgressManagerScript.IsOnTheGround = IsOnTheGround;
+        CurrentStamina = ProgressManagerScript.CurrentStamina;
     }
 
     private void InputControl()
@@ -83,8 +89,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(CrouchButton))//Crouch
         {
-            IsCrouch = !IsCrouch;
-            MainAnimator.SetBool("IsCrouch", IsCrouch);
+            ProgressManagerScript.IsCrouch = !ProgressManagerScript.IsCrouch;
+            MainAnimator.SetBool("IsCrouch", ProgressManagerScript.IsCrouch);
         }       
     }
     #endregion
@@ -108,7 +114,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 MainRB.AddForce(WallJumpForce * Time.deltaTime);
-                FlipTheCharacter(!CharacterDirection);
+                FlipTheCharacter(!ProgressManagerScript.CharacterDirection);
             }
             Jump = false;
         }
@@ -132,13 +138,13 @@ public class PlayerMovement : MonoBehaviour
         {
              transform.eulerAngles = new Vector3(0, 0, 0);
              WallJumpForce.x = -10000;
-             CharacterDirection = Right;
+             ProgressManagerScript.CharacterDirection = Right;
         }
         else if (Direction==Left)
         {
             transform.eulerAngles = new Vector3(0, 180, 0);
             WallJumpForce.x = 10000;
-            CharacterDirection = Left;
+            ProgressManagerScript.CharacterDirection = Left;
         }
     }
     #endregion

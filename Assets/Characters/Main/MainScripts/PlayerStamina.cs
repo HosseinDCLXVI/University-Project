@@ -5,22 +5,23 @@ using UnityEngine;
 public class PlayerStamina : MonoBehaviour
 {
     #region Inspector Variables
+    [SerializeField]private ProgressManager ProgressManagerScript;
+
     [Header("Stamina Settings")]
     [SerializeField]private GameObject StaminaBar;
     [SerializeField]private float MaxStamina;
     [SerializeField]private float StaminaGainSpeed;
     #endregion
 
-    [HideInInspector]public float CurrentStamina;
     void Start()
     {
-        CurrentStamina = MaxStamina;
+        ProgressManagerScript.CurrentStamina = MaxStamina;
     }
 
     #region Main Stamina Functions
     void Update()
     {
-        if (CurrentStamina == 0)
+        if (ProgressManagerScript.CurrentStamina == 0)
         {
             Invoke("StaminaGain", 2);
         }
@@ -34,29 +35,29 @@ public class PlayerStamina : MonoBehaviour
     }
     private void StaminaNormalization() // Chech if stamina has the right amount 
     {
-        if (CurrentStamina > MaxStamina)
+        if (ProgressManagerScript.CurrentStamina > MaxStamina)
         {
-            CurrentStamina = MaxStamina;
+            ProgressManagerScript.CurrentStamina = MaxStamina;
         }
-        if (CurrentStamina <= 0)
+        if (ProgressManagerScript.CurrentStamina <= 0)
         {
-            CurrentStamina = 0;
+            ProgressManagerScript.CurrentStamina = 0;
         }
     }
     private void StaminaRegain()
     {
-        CurrentStamina += Time.deltaTime * StaminaGainSpeed;
+        ProgressManagerScript.CurrentStamina += Time.deltaTime * StaminaGainSpeed;
     }
     private void StaminaBarControler()
     {
         StaminaBar.GetComponent<DisplaStamina>().MaxStamina = MaxStamina;
-        StaminaBar.GetComponent<DisplaStamina>().CurrentStamina = CurrentStamina;
+        StaminaBar.GetComponent<DisplaStamina>().CurrentStamina = ProgressManagerScript.CurrentStamina;
     }
     #endregion
     #region Animation Functions
     void StaminaFunc(float NeededStamina)
     {
-        CurrentStamina -= NeededStamina;
+        ProgressManagerScript.CurrentStamina -= NeededStamina;
     }
     #endregion
 }

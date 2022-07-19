@@ -12,7 +12,7 @@ public class Crouch : StateMachineBehaviour
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool("IsCrouch", false);
-        PlayerMovement CC= FindObjectOfType<PlayerMovement>();
+        ProgressManager CC= FindObjectOfType<ProgressManager>();
         CC.IsCrouch = false;
     }
 

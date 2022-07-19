@@ -22,7 +22,7 @@ public class EnemyPatrol : MonoBehaviour
     [Range(1f, 4f)]
     [SerializeField] private float EnemyBackwardVisionDistance;
 
-
+    [SerializeField] private bool PlayerShouldStayUndetected;
     #endregion
 
     #region Patrol Variables
@@ -170,6 +170,7 @@ public class EnemyPatrol : MonoBehaviour
         {
             EnemyCanSeeThePlayer = true;
             EnemyIsAwareOfThePlayer = true;
+            StelthMission(RaycastHit);
         }
         else
         {
@@ -187,7 +188,15 @@ public class EnemyPatrol : MonoBehaviour
             {
                 EnemyCanSeeThePlayer = true;
                 EnemyIsAwareOfThePlayer = true;
+                StelthMission(BackwardRaycastHit);
             }
+        }
+    }
+    void StelthMission(RaycastHit2D Player)
+    {
+        if (PlayerShouldStayUndetected)
+        {
+            Player.collider.GetComponent<PlayerHealth>().GameOver();
         }
     }
     #endregion

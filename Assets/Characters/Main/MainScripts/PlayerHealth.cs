@@ -7,6 +7,7 @@ using UnityEngine.Rendering.Universal;
 public class PlayerHealth : MonoBehaviour
 {
     #region Inspector Variables
+    [SerializeField] private ProgressManager ProgressManagerScript;
     [Header("Health Settings")]
     [SerializeField] private GameObject HealthBar;
     [SerializeField] private GameObject GameOverCanvas;
@@ -15,13 +16,11 @@ public class PlayerHealth : MonoBehaviour
 
     private Animator MainAnimator;
 
-    [HideInInspector]public Volume BlurEffect;
-    [HideInInspector]public float CurrentHealth;
 
     void Start()
     {
         MainAnimator=GetComponent<Animator>();
-        CurrentHealth = MaxHealth;
+        ProgressManagerScript.CurrentHealth = MaxHealth;
     }
 
     void Update()
@@ -30,15 +29,16 @@ public class PlayerHealth : MonoBehaviour
         DeathFunc();
     }
 
+
     void HealthBarControll()
     {
         HealthBar.GetComponent<DisplayHealth>().MaxHealth = MaxHealth;
-        HealthBar.GetComponent<DisplayHealth>().CurrentHealth = CurrentHealth;
+        HealthBar.GetComponent<DisplayHealth>().CurrentHealth = ProgressManagerScript.CurrentHealth;
     }
 
     public void DeathFunc()
     {
-        if (CurrentHealth <= 0)
+        if (ProgressManagerScript.CurrentHealth <= 0)
         {
             MainAnimator.SetBool("Die", true);
             Destroy(this, 3);
@@ -49,13 +49,13 @@ public class PlayerHealth : MonoBehaviour
     public void GameOver()
     {
         GameOverCanvas.SetActive(true);
-        BlurEffect.weight = 1f;
+        ProgressManagerScript.BlurEffect.weight = 1f;
         Time.timeScale = 0;
     }
 
     public void PlayerDamage(int damage) //gets called from enemy attack script
     {
-        CurrentHealth -= damage;
+        ProgressManagerScript.CurrentHealth -= damage;
         MainAnimator.SetTrigger("Hit");
 
     }

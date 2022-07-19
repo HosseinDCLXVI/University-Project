@@ -61,11 +61,11 @@ TagManager:
   - name: Main
     uniqueID: 872008105
     locked: 0
-  - name: front
-    uniqueID: 1854793421
-    locked: 0
   - name: Character
     uniqueID: 962000733
+    locked: 0
+  - name: front
+    uniqueID: 1854793421
     locked: 0
   - name: Lava
     uniqueID: 2661300677

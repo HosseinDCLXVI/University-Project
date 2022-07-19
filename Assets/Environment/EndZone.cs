@@ -24,7 +24,7 @@ public class EndZone : MonoBehaviour
     void ShowCompletionPanel()
     {
         CompletionPanel.SetActive(true);
-        Player.GetComponent<PlayerHealth>().BlurEffect.weight = 1f;
+        Player.GetComponent<ProgressManager>().BlurEffect.weight = 1f;
         Time.timeScale = 0;
     }
     

@@ -3,18 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
+
 
 public class ProgressManager : MonoBehaviour
 {
-    #region Inspector Variables
-   [HideInInspector] public int Totalkills = 0;
-   [HideInInspector] public float KillPoints; //comes from PlayerAttack
-   [HideInInspector] public float time;
-   [HideInInspector] public float Health; //Comes from PlayerHealth
-   [HideInInspector] public int TotalScore;
-   [HideInInspector] public Text TimeShowCase;
-   [HideInInspector] public Text PointShowCase;
-   [HideInInspector] public int level;
+
+    //comes from PlayerAttack
+    [HideInInspector] public float time;
+    [HideInInspector] public float Health; //Comes from PlayerHealth
+    [HideInInspector] public int Totalkills = 0;
+    [HideInInspector] public float KillPoints;
+    [HideInInspector] public int TotalScore;
+    [HideInInspector] public Text TimeShowCase;
+    [HideInInspector] public Text PointShowCase;
+    [HideInInspector] public int level;
+
+    [HideInInspector] public float CurrentStamina;
+
+    #region PlayerHealth Variables
+    [HideInInspector] public Volume BlurEffect;
+    [HideInInspector] public float CurrentHealth;
+    #endregion
+
+    #region PlayerMovement Variables
+    [HideInInspector] public bool CanMove;
+    [HideInInspector] public bool IsOnTheGround;
+    [HideInInspector] public bool CharacterDirection, Right = true, Left = false;
+    #endregion
+    #region ProgressManager Variballes
+
+    #endregion
+
+    #region Crouch Script Variable
+    [HideInInspector] public bool IsCrouch;
     #endregion
 
     #region setting up the latest progress in the level
@@ -41,11 +63,11 @@ public class ProgressManager : MonoBehaviour
             if (latestProgress.SavedInTheMiddle) //saved in the middle will be true when player starts a level and gets to a checkpoint and doesnt finish the level
             {
                 transform.position = new Vector3(latestProgress.LastCheckpointPosition[0], latestProgress.LastCheckpointPosition[1], latestProgress.LastCheckpointPosition[2]);
-                GetComponent<ProgressManager>().level = (int)latestProgress.Level;
-                GetComponent<ProgressManager>().time = (int)latestProgress.Time;
-                GetComponent<PlayerHealth>().CurrentHealth = (int)latestProgress.Health;
-                GetComponent<PlayerStamina>().CurrentStamina = (int)latestProgress.Stamina;
-                GetComponent<ProgressManager>().KillPoints = (int)latestProgress.Points;
+                level = (int)latestProgress.Level;
+                time = (int)latestProgress.Time;
+                CurrentHealth = (int)latestProgress.Health;
+                CurrentStamina = (int)latestProgress.Stamina;
+                KillPoints = (int)latestProgress.Points;
             }
         }
         Continue.DoContinue = false;
@@ -79,7 +101,7 @@ public class ProgressManager : MonoBehaviour
     }
     void TotalScoreCalculator()
     {
-        Health = GetComponent<PlayerHealth>().CurrentHealth;
+        Health = CurrentHealth;
         TotalScore = (int)(KillPoints * (Health + 10));
     }
     void InGameCursorManager()

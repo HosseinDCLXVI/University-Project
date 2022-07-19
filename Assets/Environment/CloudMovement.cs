@@ -16,10 +16,10 @@ public class CloudMovement : MonoBehaviour
     }
     void FixedUpdate()
     {
-        transform.position+=new Vector3(MovementSpeed,0,0)*Time.deltaTime;
+        transform.Translate(new Vector3(MovementSpeed,0,0)*Time.deltaTime);
         if(transform.position.x-camera.transform.position.x<=-Length)
         {
-            transform.position = new Vector3(camera.transform.position.x,startpointy+camera.transform.position.y);
+            transform.position = new Vector3(camera.transform.position.x,startpointy+camera.transform.position.y,transform.position.z);
         }
 
     }

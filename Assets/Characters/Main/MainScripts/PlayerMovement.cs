@@ -30,7 +30,6 @@ public class PlayerMovement : MonoBehaviour
     private Animator MainAnimator;
     private Rigidbody2D MainRB;
 
-    private bool CanMove;
     private bool IsOnTheGround;
 
     private float CurrentStamina; 
@@ -46,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
     {
         MainAnimator=GetComponent<Animator>();
         MainRB=GetComponent<Rigidbody2D>();
-        CanMove = true;
+        ProgressManagerScript.CanMove = true;
         IsOnTheGround = true;
     }
 
@@ -58,14 +57,13 @@ public class PlayerMovement : MonoBehaviour
     }
     void SyncData()
     {
-        ProgressManagerScript.CanMove = CanMove;
         ProgressManagerScript.IsOnTheGround = IsOnTheGround;
         CurrentStamina = ProgressManagerScript.CurrentStamina;
     }
 
     private void InputControl()
     {
-        if (CanMove) //RUN
+        if (ProgressManagerScript.CanMove) //RUN
         {
             MoveRight=Input.GetKey(MoveRightButton);
             MoveLeft=Input.GetKey(MoveLeftButton);
@@ -189,11 +187,11 @@ public class PlayerMovement : MonoBehaviour
     #region Movement Functions that are called from inside of the animations
     void StopMoving() //stops moving before attacks (from the animations)
     {
-        CanMove = false;
+        ProgressManagerScript.CanMove = false;
     }
     void StartMoving() //starts moving after attacks (from the animations)
     {
-        CanMove = true;
+        ProgressManagerScript.CanMove = true;
         MainRB.gravityScale = 1;
     }
     void ReadyForNextAttack() //for better input reading (from the animations)
@@ -205,13 +203,13 @@ public class PlayerMovement : MonoBehaviour
     void AirStop() //stops moving before air attacks (from the animations)
     {
         MainRB.constraints = RigidbodyConstraints2D.FreezePosition;
-        CanMove = false;
+        ProgressManagerScript.CanMove = false;
 
     }
     void AirStart() //starts moving after air attacks (from the animations)
     {
         MainRB.constraints = RigidbodyConstraints2D.None;
-        CanMove = true;
+        ProgressManagerScript.CanMove = true;
         MainRB.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
     void AirAttackGravityControl() 

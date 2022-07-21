@@ -12,6 +12,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private KeyCode HeavyAttackButton;
     [SerializeField] private KeyCode FireBallButton;
     [SerializeField] private KeyCode AimAndShoot;
+    [SerializeField] private KeyCode CancelAim;
 
     [Space(5)]
     [Header("Melee Attack Settings")]
@@ -33,6 +34,8 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float AimingDistanceLimit;
     [SerializeField] private float AimAngleLimit;
     [SerializeField] private GameObject Crosshair;
+    [SerializeField]private GameObject  AimFieldMesh;
+    [SerializeField] private float ArrowForce;
 
 
     [Tooltip("controllable Movements Speed")]
@@ -41,6 +44,8 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Vector2 AimingDificulty_Speed;
     [Tooltip("uncontrollable Moving Direction Cahnges")]
     [SerializeField] private float AimingDificulty_Direction;
+
+
     #endregion
 
     #region Other Variables
@@ -67,7 +72,7 @@ public class PlayerAttack : MonoBehaviour
         IsOnTheGround=ProgressManagerScript.IsOnTheGround;
         CurrentStamina=ProgressManagerScript.CurrentStamina;
         InputControl();
-        CheckIfCanAim();
+
     }
     private void InputControl()
     {
@@ -87,6 +92,7 @@ public class PlayerAttack : MonoBehaviour
 
         if(Input.GetKeyDown(AimAndShoot))
         {
+            Cursor.visible=false;
             if (ProgressManagerScript.CharacterDirection == Right)
             {
                 Vector3 CrosshairStartPointInWorld = new Vector3((transform.position.x + (transform.position.x + AimingDistanceLimit)) / 2, transform.position.y, transform.position.z);
@@ -100,60 +106,85 @@ public class PlayerAttack : MonoBehaviour
                 Crosshair.transform.position = CrosshairStartPointInScreen;
             }
         }
-        if(Input.GetKey(AimAndShoot)&& CheckIfCanAim())
+        if (Input.GetKey(AimAndShoot) && !Input.GetKey(CancelAim))
         {
-            MainAnimator.SetBool("Aim", true);            
-            Crosshair.SetActive(true);
+            MainAnimator.SetBool("Aim", true);
+            CheckIfCanAim();
+            AimFieldMesh.SetActive(true);
+            ProgressManagerScript.CanMove = false;
+
         }
-        else
+        else if(Input.GetKey(AimAndShoot) && Input.GetKey(CancelAim)) //cancel aiming
         {
             MainAnimator.SetBool("Aim", false);
             Crosshair.SetActive(false);
+            AimFieldMesh.SetActive(false);
+            ProgressManagerScript.CanMove = true;
+        }
+        else  //shooting ===== canmove will set to true in shooting animation
+        {
+            MainAnimator.SetBool("Aim", false);
+            Crosshair.SetActive(false);
+            AimFieldMesh.SetActive(false);
         }
         Crosshair.transform.position += new Vector3(Input.GetAxis("Mouse X") * 4 + randomNumber.x, Input.GetAxis("Mouse Y") * 4 + randomNumber.y, 0);
 
-        if (Input.GetKeyUp(AimAndShoot) && CheckIfCanAim())
+        if (Input.GetKeyUp(AimAndShoot))
         {
-            MainAnimator.SetBool("Aim", true);// should it be true or this line should be removed
-            MainAnimator.SetTrigger("Shoot");
-            //triangle
+            ShootingArrows();
             // create arrow for shooting
             //fix the animations
             //arrow effect while shooting
-
             //complete the level
             //make the last enemy
         }
 
     }
 
-    bool CheckIfCanAim()
+    void ShootingArrows()
     {
-        Cursor.visible = false;
+        MainAnimator.SetTrigger("Shoot");
 
+        Vector3 PlayerPosition = transform.position;
+        Vector3 CrosshairDistanceFromPlayer = CrosshairPossitionInWorld() - PlayerPosition;
+        float ShootingAngle = Mathf.Atan2(CrosshairDistanceFromPlayer.y, CrosshairDistanceFromPlayer.x) * Mathf.Rad2Deg;
+
+        Quaternion ArrowRotation=new Quaternion (0f,0f,ShootingAngle,0f);
+        Arrow = Instantiate(Arrow, ArrowStartPoint.position, ArrowRotation);
+        Rigidbody2D ArrowRigidbody = Arrow.GetComponent<Rigidbody2D>();
+        ArrowRigidbody.bodyType = RigidbodyType2D.Dynamic;
+        ArrowRigidbody.rotation = ShootingAngle;
+        ArrowRigidbody.AddRelativeForce(new Vector2(ArrowForce, 0f));
+    }
+
+    Vector3 CrosshairPossitionInWorld()
+    {
         Vector3 CrosshairPosition = Crosshair.transform.position;
         CrosshairPosition.z = 10;
 
-        CrosshairScript crosshairScript = Crosshair.GetComponent<CrosshairScript>();
         Vector3 CrosshairPositionInWorld = MainCamera.ScreenToWorldPoint(CrosshairPosition);
+        return CrosshairPositionInWorld;
+    }
+     void CheckIfCanAim()
+    {
 
         Vector3 PlayerPosition = transform.position;
-        Vector3 CrosshairDistanceFromPlayer = CrosshairPositionInWorld - PlayerPosition;
+        Vector3 CrosshairDistanceFromPlayer = CrosshairPossitionInWorld() - PlayerPosition;
         float ShootingAngle = Mathf.Atan2(CrosshairDistanceFromPlayer.y, CrosshairDistanceFromPlayer.x) * Mathf.Rad2Deg;
-
 
         if (Mathf.Abs(CrosshairDistanceFromPlayer.x)<AimingDistanceLimit && ((ProgressManagerScript.CharacterDirection==Right)&&Mathf.Abs(ShootingAngle) < AimAngleLimit || (ProgressManagerScript.CharacterDirection==Left&&Mathf.Abs(ShootingAngle) > (180 - AimAngleLimit))))
         {
-            RandomNumberGeneratorForCrossHairRandomMovement();
-            return true;
+            AimingInstability(CrosshairDistanceFromPlayer);
+            Crosshair.SetActive(true);
+
         }
         else
         {
-            return false;
+            Crosshair.SetActive(false);
         }
 
     }
-    void RandomNumberGeneratorForCrossHairRandomMovement() //madeup formula to make random yet kinda predictable numbers :)
+     void AimingInstability(Vector3 CrosshairDistanceFromPlayer) //madeup formula to make random yet kinda predictable numbers :)
     {
         if (timer <= AimingDificulty_Direction)
         {
@@ -161,27 +192,7 @@ public class PlayerAttack : MonoBehaviour
         }
         else
         {
-          // randomNumber = new Vector3(Random.Range(-AimingDificulty_Speed.x, AimingDificulty_Speed.x), Random.Range(-AimingDificulty_Speed.y, AimingDificulty_Speed.y)); //-------this line is good enough to make random movements but they are not  predictable enough
-
-             if (randomNumber.x <= 0)//------- this code makes more predictable numbers
-             {
-                 if (randomNumber.y <= 0)
-                     randomNumber = new Vector3(Random.Range(0, AimingDificulty_Speed.x), Random.Range(0, AimingDificulty_Speed.y));
-                 else if(randomNumber.y > 0)
-                     randomNumber = new Vector3(Random.Range(0, AimingDificulty_Speed.x), Random.Range(-AimingDificulty_Speed.y, 0));
-             }
-             else if (randomNumber.x > 0)
-             {
-                 if(randomNumber.y <= 0)
-                     randomNumber = new Vector3(Random.Range(-AimingDificulty_Speed.x,0), Random.Range(0, AimingDificulty_Speed.y));
-                 else if(randomNumber.y>0)
-                     randomNumber = new Vector3(Random.Range(-AimingDificulty_Speed.x, 0), Random.Range(-AimingDificulty_Speed.y, 0));
-             }
-
-             if (Mathf.Abs(randomNumber.x)+ Mathf.Abs(randomNumber.x) < (AimingDificulty_Speed.x+ AimingDificulty_Speed.y) /10) 
-             {
-                 randomNumber = new Vector3(Random.Range(-AimingDificulty_Speed.x, AimingDificulty_Speed.x), Random.Range(-AimingDificulty_Speed.y, AimingDificulty_Speed.y));
-             }
+            randomNumber = new Vector3(Random.Range(-AimingDificulty_Speed.x* CrosshairDistanceFromPlayer.x, AimingDificulty_Speed.x* CrosshairDistanceFromPlayer.x), Random.Range(-AimingDificulty_Speed.y * CrosshairDistanceFromPlayer.x, AimingDificulty_Speed.y * CrosshairDistanceFromPlayer.x));
             timer = 0;
         }
     }

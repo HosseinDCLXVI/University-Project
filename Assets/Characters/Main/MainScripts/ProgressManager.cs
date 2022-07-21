@@ -27,7 +27,7 @@ public class ProgressManager : MonoBehaviour
     #endregion
 
     #region PlayerMovement Variables
-    [HideInInspector] public bool CanMove;
+    [HideInInspector] public bool CanMove=true;
     [HideInInspector] public bool IsOnTheGround;
     [HideInInspector] public bool CharacterDirection, Right = true, Left = false;
     #endregion

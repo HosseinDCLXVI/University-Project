@@ -9,6 +9,9 @@ TagManager:
   - Wall
   - ETop
   - EnemyFire
+  - Head
+  - Body
+  - Feet
   layers:
   - Default
   - TransparentFX

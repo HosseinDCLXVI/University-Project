@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 using UnityEngine.UI;
 public class PlayerAttack : MonoBehaviour
 {
     #region Inspector Variables
+
     [SerializeField] private ProgressManager ProgressManagerScript;
     [Header("Attack Inputs")]
     [SerializeField] private KeyCode LightAttackButton;
     [SerializeField] private KeyCode HeavyAttackButton;
     [SerializeField] private KeyCode FireBallButton;
     [SerializeField] private KeyCode AimAndShoot;
-    [SerializeField] private KeyCode CancelAim;
 
     [Space(5)]
     [Header("Melee Attack Settings")]
@@ -21,13 +22,13 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Transform HitboxCenter;
     [SerializeField] private int LightAttackRquiredStamina;
     [SerializeField] private int HeavyAttackRquiredStamina;
-    [SerializeField] private int FireBallRquiredStamina;
 
     [Space(5)]
     [Header("Ranged Attack Settings")]
+    [SerializeField] private GameObject FireballBar;
     [SerializeField] private GameObject Fireball;
     [SerializeField] private Transform FireBallStartPoint;
-
+    [SerializeField] private int MaxFirePoint;
     [SerializeField] private GameObject Arrow;
     [SerializeField] private Transform ArrowStartPoint;
     [SerializeField] private Camera MainCamera;
@@ -49,12 +50,18 @@ public class PlayerAttack : MonoBehaviour
     #endregion
 
     #region Other Variables
-     private Animator MainAnimator;
-     private bool  Right = true, Left = false;
+    private Animator MainAnimator;
+    private bool  Right = true, Left = false;
     private float CurrentStamina; //comes from PlayerStamina
-     private bool IsOnTheGround; //comes from PlayerMovement
-    private bool CrossHairIsActive;
+    private bool IsOnTheGround; //comes from PlayerMovement
     Vector3 randomNumber = new Vector3(0, 0, 0);
+
+    private bool CanShoot=true;
+    float SlomoAimingEffect;///
+    bool IsSlomo=false;
+    bool WasSlomo = false;
+
+
 
 
     private float timer=0;
@@ -72,7 +79,7 @@ public class PlayerAttack : MonoBehaviour
         IsOnTheGround=ProgressManagerScript.IsOnTheGround;
         CurrentStamina=ProgressManagerScript.CurrentStamina;
         InputControl();
-
+        FirePointControl();
     }
     private void InputControl()
     {
@@ -85,7 +92,7 @@ public class PlayerAttack : MonoBehaviour
             MainAnimator.SetTrigger("SuperAttack");
         }
 
-        if (Input.GetKeyDown(FireBallButton) && IsOnTheGround && CurrentStamina >= FireBallRquiredStamina)
+        if (Input.GetKeyDown(FireBallButton) && IsOnTheGround && ProgressManagerScript.CurrentFirePoint == MaxFirePoint)
         {
             MainAnimator.SetBool("Cast", true);
         }
@@ -93,6 +100,12 @@ public class PlayerAttack : MonoBehaviour
         if(Input.GetKeyDown(AimAndShoot))
         {
             Cursor.visible=false;
+          /*  if (!ProgressManagerScript.IsOnTheGround)
+                IsSlomo = true;
+
+            else
+                IsSlomo = false;*/
+
             if (ProgressManagerScript.CharacterDirection == Right)
             {
                 Vector3 CrosshairStartPointInWorld = new Vector3((transform.position.x + (transform.position.x + AimingDistanceLimit)) / 2, transform.position.y, transform.position.z);
@@ -106,51 +119,92 @@ public class PlayerAttack : MonoBehaviour
                 Crosshair.transform.position = CrosshairStartPointInScreen;
             }
         }
-        if (Input.GetKey(AimAndShoot) && !Input.GetKey(CancelAim))
+
+        if (Input.GetKey(AimAndShoot)&& CanShoot)
         {
+
+            SlowmoAiming();
             MainAnimator.SetBool("Aim", true);
             CheckIfCanAim();
             AimFieldMesh.SetActive(true);
             ProgressManagerScript.CanMove = false;
 
         }
-        else if(Input.GetKey(AimAndShoot) && Input.GetKey(CancelAim)) //cancel aiming
+        else if(!Input.GetKey(AimAndShoot) && !Crosshair.activeSelf) //cancel aiming---- crosshair deactivates when its out of range
         {
             MainAnimator.SetBool("Aim", false);
-            Crosshair.SetActive(false);
             AimFieldMesh.SetActive(false);
-            ProgressManagerScript.CanMove = true;
+            IsSlomo = false;
+            SlowmoAiming();
         }
         else  //shooting ===== canmove will set to true in shooting animation
         {
+
             MainAnimator.SetBool("Aim", false);
+
+            if(Crosshair.activeSelf)
+            ShootingArrows();
+
+
+            CanShoot =false;
+            if (!IsInvoking("ShootingCoolDown"))
+            {
+                Invoke("ShootingCoolDown", 0.5f);
+            }
+
             Crosshair.SetActive(false);
-            AimFieldMesh.SetActive(false);
+            IsSlomo = false;
+            SlowmoAiming();
         }
         Crosshair.transform.position += new Vector3(Input.GetAxis("Mouse X") * 4 + randomNumber.x, Input.GetAxis("Mouse Y") * 4 + randomNumber.y, 0);
 
         if (Input.GetKeyUp(AimAndShoot))
         {
-            ShootingArrows();
-            // create arrow for shooting
-            //fix the animations
-            //arrow effect while shooting
-            //complete the level
-            //make the last enemy
+            ProgressManagerScript.CanMove = true;
         }
+    }
+    public void StartSlomoAiming()
+    {
+                IsSlomo = true;
+    }
+    void SlowmoAiming()
+    {
 
+        if(IsSlomo)
+        {
+            if(SlomoAimingEffect == 1)
+             SlomoAimingEffect = 0.2F;
+
+            if (SlomoAimingEffect<1)
+            {
+                SlomoAimingEffect+=Time.deltaTime/1.5f;
+            }
+            else
+            {
+                IsSlomo =false;
+                SlomoAimingEffect = 1F;
+            }
+        }
+        else
+        {
+             SlomoAimingEffect = 1F;
+        }
+        Time.timeScale = SlomoAimingEffect;
+    }
+    void ShootingCoolDown()
+    {
+        CanShoot = true;
     }
 
     void ShootingArrows()
     {
-        MainAnimator.SetTrigger("Shoot");
-
         Vector3 PlayerPosition = transform.position;
         Vector3 CrosshairDistanceFromPlayer = CrosshairPossitionInWorld() - PlayerPosition;
         float ShootingAngle = Mathf.Atan2(CrosshairDistanceFromPlayer.y, CrosshairDistanceFromPlayer.x) * Mathf.Rad2Deg;
 
         Quaternion ArrowRotation=new Quaternion (0f,0f,ShootingAngle,0f);
         Arrow = Instantiate(Arrow, ArrowStartPoint.position, ArrowRotation);
+        Arrow.SetActive(true);
         Rigidbody2D ArrowRigidbody = Arrow.GetComponent<Rigidbody2D>();
         ArrowRigidbody.bodyType = RigidbodyType2D.Dynamic;
         ArrowRigidbody.rotation = ShootingAngle;
@@ -176,7 +230,6 @@ public class PlayerAttack : MonoBehaviour
         {
             AimingInstability(CrosshairDistanceFromPlayer);
             Crosshair.SetActive(true);
-
         }
         else
         {
@@ -205,6 +258,7 @@ public class PlayerAttack : MonoBehaviour
 
         foreach (Collider2D SingleEnemy in Enemy)
         {
+            ProgressManagerScript.CurrentFirePoint += 2;
             SingleEnemy.GetComponent<EnemyHealth>().EnemyDamage(Damage);
             if (SingleEnemy.GetComponent <EnemyController>().EnemyCurrentHealth<=0)
             {
@@ -216,6 +270,16 @@ public class PlayerAttack : MonoBehaviour
                 KillCheck = SingleEnemy.gameObject;
             }
         }
+    }
+
+    void FirePointControl()
+    {
+        if(ProgressManagerScript.CurrentFirePoint>MaxFirePoint)
+        {
+            ProgressManagerScript.CurrentFirePoint = MaxFirePoint;
+        }
+        FireballBar.GetComponent<DisplayFirePoint>().MaxFirePoint = MaxFirePoint;
+        FireballBar.GetComponent<DisplayFirePoint>().CurrentFirePoint = ProgressManagerScript.CurrentFirePoint;
     }
 
     void FireBall() //animation function

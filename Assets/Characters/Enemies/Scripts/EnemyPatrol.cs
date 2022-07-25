@@ -23,6 +23,7 @@ public class EnemyPatrol : MonoBehaviour
     [SerializeField] private float EnemyBackwardVisionDistance;
 
     [SerializeField] private bool PlayerShouldStayUndetected;
+
     #endregion
 
     #region Patrol Variables
@@ -167,7 +168,9 @@ public class EnemyPatrol : MonoBehaviour
     {
         RaycastHit2D RaycastHit = Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.right), EnemyVisionDistance, PlayerLayer);
         if (RaycastHit)
+        if (RaycastHit.collider.GetComponent<ProgressManager>().PlayerIsVisible)
         {
+            
             EnemyCanSeeThePlayer = true;
             EnemyIsAwareOfThePlayer = true;
             StelthMission(RaycastHit);
@@ -182,7 +185,8 @@ public class EnemyPatrol : MonoBehaviour
         }
 
         RaycastHit2D BackwardRaycastHit = Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.left), EnemyBackwardVisionDistance, PlayerLayer);
-        if (BackwardRaycastHit)
+        if(BackwardRaycastHit)
+        if (BackwardRaycastHit.collider.GetComponent<ProgressManager>().PlayerIsVisible)
         {
             if (PlayerIsInsideTheZone && EnemyIsInsideTheZone)
             {

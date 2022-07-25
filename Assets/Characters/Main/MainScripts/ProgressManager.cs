@@ -18,22 +18,22 @@ public class ProgressManager : MonoBehaviour
     [HideInInspector] public Text TimeShowCase;
     [HideInInspector] public Text PointShowCase;
     [HideInInspector] public int level;
-
+    [HideInInspector] public int CurrentFirePoint;
     [HideInInspector] public float CurrentStamina;
 
+     public bool PlayerIsVisible=true;
     #region PlayerHealth Variables
     [HideInInspector] public Volume BlurEffect;
     [HideInInspector] public float CurrentHealth;
     #endregion
 
+
     #region PlayerMovement Variables
-    [HideInInspector] public bool CanMove=true;
+    [HideInInspector] public bool CanMove;
     [HideInInspector] public bool IsOnTheGround;
     [HideInInspector] public bool CharacterDirection, Right = true, Left = false;
     #endregion
-    #region ProgressManager Variballes
 
-    #endregion
 
     #region Crouch Script Variable
     [HideInInspector] public bool IsCrouch;

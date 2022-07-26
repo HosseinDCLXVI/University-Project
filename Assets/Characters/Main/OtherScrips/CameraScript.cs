@@ -15,8 +15,8 @@ public class CameraScript : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        //MainCamera.transform.position = Character.transform.position + Offset;
-        CamRb.MovePosition(Character.transform.position + Offset);
+        MainCamera.transform.position = Character.transform.position + Offset;
+       // CamRb.MovePosition(Character.transform.position + Offset);
     }
 
 }

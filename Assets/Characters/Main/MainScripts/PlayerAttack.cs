@@ -59,7 +59,6 @@ public class PlayerAttack : MonoBehaviour
     private bool CanShoot=true;
     float SlomoAimingEffect;///
     bool IsSlomo=false;
-    bool WasSlomo = false;
 
 
 
@@ -96,71 +95,67 @@ public class PlayerAttack : MonoBehaviour
         {
             MainAnimator.SetBool("Cast", true);
         }
-
-        if(Input.GetKeyDown(AimAndShoot))
+        if (ProgressManagerScript.CanAim)
         {
-            Cursor.visible=false;
-          /*  if (!ProgressManagerScript.IsOnTheGround)
-                IsSlomo = true;
-
-            else
-                IsSlomo = false;*/
-
-            if (ProgressManagerScript.CharacterDirection == Right)
+            if (Input.GetKeyDown(AimAndShoot))
             {
-                Vector3 CrosshairStartPointInWorld = new Vector3((transform.position.x + (transform.position.x + AimingDistanceLimit)) / 2, transform.position.y, transform.position.z);
-                Vector3 CrosshairStartPointInScreen = MainCamera.WorldToScreenPoint(CrosshairStartPointInWorld);
-                Crosshair.transform.position = CrosshairStartPointInScreen;
+                Cursor.visible = false;
+
+                if (ProgressManagerScript.CharacterDirection == Right)
+                {
+                    Vector3 CrosshairStartPointInWorld = new Vector3((transform.position.x + (transform.position.x + AimingDistanceLimit)) / 2, transform.position.y, transform.position.z);
+                    Vector3 CrosshairStartPointInScreen = MainCamera.WorldToScreenPoint(CrosshairStartPointInWorld);
+                    Crosshair.transform.position = CrosshairStartPointInScreen;
+                }
+                else
+                {
+                    Vector3 CrosshairStartPointInWorld = new Vector3((transform.position.x + (transform.position.x - AimingDistanceLimit)) / 2, transform.position.y, transform.position.z);
+                    Vector3 CrosshairStartPointInScreen = MainCamera.WorldToScreenPoint(CrosshairStartPointInWorld);
+                    Crosshair.transform.position = CrosshairStartPointInScreen;
+                }
             }
-            else
+            if (Input.GetKey(AimAndShoot) && CanShoot)
             {
-                Vector3 CrosshairStartPointInWorld = new Vector3((transform.position.x + (transform.position.x - AimingDistanceLimit)) / 2, transform.position.y, transform.position.z);
-                Vector3 CrosshairStartPointInScreen = MainCamera.WorldToScreenPoint(CrosshairStartPointInWorld);
-                Crosshair.transform.position = CrosshairStartPointInScreen;
+
+                SlowmoAiming();
+                MainAnimator.SetBool("Aim", true);
+                CheckIfCanAim();
+                AimFieldMesh.SetActive(true);
+                ProgressManagerScript.CanMove = false;
+
             }
-        }
-
-        if (Input.GetKey(AimAndShoot)&& CanShoot)
-        {
-
-            SlowmoAiming();
-            MainAnimator.SetBool("Aim", true);
-            CheckIfCanAim();
-            AimFieldMesh.SetActive(true);
-            ProgressManagerScript.CanMove = false;
-
-        }
-        else if(!Input.GetKey(AimAndShoot) && !Crosshair.activeSelf) //cancel aiming---- crosshair deactivates when its out of range
-        {
-            MainAnimator.SetBool("Aim", false);
-            AimFieldMesh.SetActive(false);
-            IsSlomo = false;
-            SlowmoAiming();
-        }
-        else  //shooting ===== canmove will set to true in shooting animation
-        {
-
-            MainAnimator.SetBool("Aim", false);
-
-            if(Crosshair.activeSelf)
-            ShootingArrows();
-
-
-            CanShoot =false;
-            if (!IsInvoking("ShootingCoolDown"))
+            else if (!Input.GetKey(AimAndShoot) && !Crosshair.activeSelf) //cancel aiming---- crosshair deactivates when its out of range
             {
-                Invoke("ShootingCoolDown", 0.5f);
+                MainAnimator.SetBool("Aim", false);
+                AimFieldMesh.SetActive(false);
+                IsSlomo = false;
+                SlowmoAiming();
             }
+            else  //shooting ===== canmove will set to true in shooting animation
+            {
 
-            Crosshair.SetActive(false);
-            IsSlomo = false;
-            SlowmoAiming();
-        }
-        Crosshair.transform.position += new Vector3(Input.GetAxis("Mouse X") * 4 + randomNumber.x, Input.GetAxis("Mouse Y") * 4 + randomNumber.y, 0);
+                MainAnimator.SetBool("Aim", false);
 
-        if (Input.GetKeyUp(AimAndShoot))
-        {
-            ProgressManagerScript.CanMove = true;
+                if (Crosshair.activeSelf)
+                    ShootingArrows();
+
+
+                CanShoot = false;
+                if (!IsInvoking("ShootingCoolDown"))
+                {
+                    Invoke("ShootingCoolDown", 0.5f);
+                }
+
+                Crosshair.SetActive(false);
+                IsSlomo = false;
+                SlowmoAiming();
+            }
+            Crosshair.transform.position += new Vector3(Input.GetAxis("Mouse X") * 4 + randomNumber.x, Input.GetAxis("Mouse Y") * 4 + randomNumber.y, 0);
+
+            if (Input.GetKeyUp(AimAndShoot))
+            {
+                ProgressManagerScript.CanMove = true;
+            }
         }
     }
     public void StartSlomoAiming()

@@ -51,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool CornerGrb=false;
     private bool CanGrab=true;
+
     private Vector2 CornerPos;
     #endregion
 
@@ -66,7 +67,6 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         InputControl();
-        GrabTheEdge();
     }
 
 
@@ -157,12 +157,7 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 
-    void GrabTheEdge()////////////////////////////////////////////////////////////////
-    {
 
-
-
-    }
 
     void FixedGrabTheEdge()
     {
@@ -175,37 +170,41 @@ public class PlayerMovement : MonoBehaviour
         if (!TopRay && BottomRay && CanGrab)
         {
             CornerGrb = true;
-            CornerPos = BottomRay.point;         
+            CornerPos = BottomRay.point;
+            //transform.position = new Vector3(CornerPos.x, Mathf.Floor(CornerPos.y), 0);
+            transform.position =  Vector3.Lerp(transform.position,new Vector3(CornerPos.x, Mathf.Floor(CornerPos.y), 0),Mathf.SmoothStep(0.2f,1,0.05f));
+
+            MainRB.constraints = RigidbodyConstraints2D.FreezeAll;
+            MainAnimator.SetBool("GrabCorner", true);
+            ProgressManagerScript.CanMove = false;
+            ProgressManagerScript.CanAim=false;
+
         }
 
         if (CornerGrb)
         {
-            MainAnimator.SetBool("GrabCorner", true);
-            ProgressManagerScript.CanMove = false;
-            transform.position = new Vector3(CornerPos.x ,Mathf.Floor(CornerPos.y),0) ;// -new Vector2(0, 0.13f);
-            Debug.Log(BottomRay.point);
-            MainRB.gravityScale = 0;
-
-
             if (Input.GetKeyDown(JumpButton))
             {
-                MainRB.gravityScale = 1;
+                MainRB.constraints = RigidbodyConstraints2D.None;
+                MainRB.constraints = RigidbodyConstraints2D.FreezeRotation;
                 CornerGrb = false;
                 MainAnimator.SetTrigger("Climb");
                 MainAnimator.SetBool("GrabCorner", false);
                 ProgressManagerScript.CanMove = true;
                 CanGrab = false;
-                MainRB.AddForce(JumpForce * Time.deltaTime / 5);
-                //MainRB.MovePosition(transform.position + new Vector3(2, 2, 0));
+                MainRB.AddForce(JumpForce * Time.deltaTime);
+
             }
 
             if (Input.GetKeyDown(ReleaseTheLedgeBTN))
             {
+                MainRB.constraints = RigidbodyConstraints2D.None;
+                MainRB.constraints = RigidbodyConstraints2D.FreezeRotation;
                 CornerGrb = false;
                 MainAnimator.SetBool("GrabCorner", false);
                 ProgressManagerScript.CanMove = true;
                 CanGrab = false;
-                MainRB.gravityScale = 1;
+                ProgressManagerScript.CanAim = true;
             }
         }
     }
@@ -213,6 +212,8 @@ public class PlayerMovement : MonoBehaviour
     void EndOfClimbing()
     {
         CanGrab = true;
+        ProgressManagerScript.CanAim = true;
+
     }
 
     #region Wall And Ground Detection

@@ -20,7 +20,7 @@ public class ProgressManager : MonoBehaviour
     [HideInInspector] public int level;
     [HideInInspector] public int CurrentFirePoint;
     [HideInInspector] public float CurrentStamina;
-
+    [HideInInspector] public bool CanAim;
      public bool PlayerIsVisible=true;
     #region PlayerHealth Variables
     [HideInInspector] public Volume BlurEffect;
@@ -85,6 +85,10 @@ public class ProgressManager : MonoBehaviour
     #endregion
 
     #region Game Management
+    private void Start()
+    {
+        CanAim = true;
+    }
     void Update()
     {
             PointShowCase.text = KillPoints.ToString() + " Points";

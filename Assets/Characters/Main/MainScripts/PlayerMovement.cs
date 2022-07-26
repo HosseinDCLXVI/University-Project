@@ -52,6 +52,8 @@ public class PlayerMovement : MonoBehaviour
     private bool CornerGrb=false;
     private bool CanGrab=true;
 
+    private bool ClimbUp;
+    private bool ReleaseTheLedge;
     private Vector2 CornerPos;
     #endregion
 
@@ -94,11 +96,19 @@ public class PlayerMovement : MonoBehaviour
             MainAnimator.SetBool("Jump", true);
         }
 
+
         if (Input.GetKeyDown(CrouchButton))//Crouch
         {
             ProgressManagerScript.IsCrouch = !ProgressManagerScript.IsCrouch;
             MainAnimator.SetBool("IsCrouch", ProgressManagerScript.IsCrouch);
-        }       
+        }
+
+        if(CornerGrb)
+        {
+            ClimbUp=Input.GetKeyDown(JumpButton);
+            ReleaseTheLedge = Input.GetKeyDown(ReleaseTheLedgeBTN);
+        }
+
     }
     #endregion
 
@@ -108,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
         JumpFunc();
         MoveFunc();
         WallSlideControl();
-        FixedGrabTheEdge();
+        ClimbFunc();
     }
 
     void JumpFunc()
@@ -159,7 +169,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-    void FixedGrabTheEdge()
+    void ClimbFunc()
     {
 
         RaycastHit2D TopRay = Physics2D.Raycast(TopClimbObject.transform.position, transform.right, ClimbRayDistance, GroundLayer);
@@ -169,6 +179,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (!TopRay && BottomRay && CanGrab)
         {
+          //  CapsuleCollider2D capsuleCollider2D = new CapsuleCollider2D();
+          //  capsuleCollider2D.enabled = false;
             CornerGrb = true;
             CornerPos = BottomRay.point;
             //transform.position = new Vector3(CornerPos.x, Mathf.Floor(CornerPos.y), 0);
@@ -178,12 +190,13 @@ public class PlayerMovement : MonoBehaviour
             MainAnimator.SetBool("GrabCorner", true);
             ProgressManagerScript.CanMove = false;
             ProgressManagerScript.CanAim=false;
+            ///boxcol
 
         }
 
         if (CornerGrb)
         {
-            if (Input.GetKeyDown(JumpButton))
+            if (ClimbUp)
             {
                 MainRB.constraints = RigidbodyConstraints2D.None;
                 MainRB.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -193,10 +206,10 @@ public class PlayerMovement : MonoBehaviour
                 ProgressManagerScript.CanMove = true;
                 CanGrab = false;
                 MainRB.AddForce(JumpForce * Time.deltaTime);
-
+                ClimbUp = false;
             }
 
-            if (Input.GetKeyDown(ReleaseTheLedgeBTN))
+            if (ReleaseTheLedge)
             {
                 MainRB.constraints = RigidbodyConstraints2D.None;
                 MainRB.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -205,6 +218,9 @@ public class PlayerMovement : MonoBehaviour
                 ProgressManagerScript.CanMove = true;
                 CanGrab = false;
                 ProgressManagerScript.CanAim = true;
+                ReleaseTheLedge=false;
+               // CapsuleCollider2D capsuleCollider2D = new CapsuleCollider2D();
+               // capsuleCollider2D.enabled = true;
             }
         }
     }
@@ -213,6 +229,8 @@ public class PlayerMovement : MonoBehaviour
     {
         CanGrab = true;
         ProgressManagerScript.CanAim = true;
+        //CapsuleCollider2D capsuleCollider2D = new CapsuleCollider2D();
+        //capsuleCollider2D.enabled = true;
 
     }
 

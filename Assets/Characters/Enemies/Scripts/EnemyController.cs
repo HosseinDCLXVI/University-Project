@@ -29,10 +29,13 @@ public class EnemyController : MonoBehaviour
     [HideInInspector] public float ZonesLeftBorder;
     #endregion
 
+     public bool EnemyDirection;
+    [HideInInspector] public bool EnemyCanSeeThePlayer;
+    [HideInInspector] public bool EnemyIsAwareOfThePlayer;
 
     void Start()
     {
-        if(enemyType==EnemyType.Ghost)
+        if (enemyType==EnemyType.Ghost)
         {
             EnemyIsGhost();
         }

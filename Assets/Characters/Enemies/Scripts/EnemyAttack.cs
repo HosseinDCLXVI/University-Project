@@ -23,7 +23,7 @@ public class EnemyAttack : MonoBehaviour
 
     private Animator EnemyAnimator;
     private bool CanAttack = true;
-    private bool CloseEnoughToAttack;
+    //private bool CloseEnoughToAttack;
 
     #region General Scripts  
     void Start()
@@ -41,12 +41,11 @@ public class EnemyAttack : MonoBehaviour
     }
     void SyncData()
     {
-        GetComponent<EnemyController>().CloseEnoughToAttack = CloseEnoughToAttack;
         GetComponent<EnemyController>().EnemyAttackRange = EnemyAttackRange;
     }
     void AttackController()
     {
-        if (CloseEnoughToAttack && CanAttack)
+        if (EnemyControllerScript.CloseEnoughToAttack && CanAttack)
         {
             Invoke("AttackDelay", Attack_Delay);
             CanAttack = false;
@@ -87,9 +86,11 @@ public class EnemyAttack : MonoBehaviour
         {
             if (collision.tag == "Player")
             {
-                CloseEnoughToAttack = true;
-                EnemyAnimator.SetBool("Melee", true);
-
+                if (collision.GetComponent<ProgressManager>().PlayerIsVisible)
+                {
+                    EnemyControllerScript.CloseEnoughToAttack = true;
+                    EnemyAnimator.SetBool("Melee", true);
+                }
             }
         }
     }
@@ -100,7 +101,7 @@ public class EnemyAttack : MonoBehaviour
         {
             if (collision.tag == "Player")
             {
-                CloseEnoughToAttack = false;
+                EnemyControllerScript.CloseEnoughToAttack = false;
                 EnemyAnimator.SetBool("Melee", false);
             }
         }
@@ -113,11 +114,12 @@ public class EnemyAttack : MonoBehaviour
         if (raycastHit)
         {
             //CanAttackThePlayer = true;
-            CloseEnoughToAttack = true;
+            if(raycastHit.collider.GetComponent<ProgressManager>().PlayerIsVisible)
+            EnemyControllerScript.CloseEnoughToAttack = true;
         }
         else
         {
-            CloseEnoughToAttack = false;
+            EnemyControllerScript.CloseEnoughToAttack = false;
         }
     }
 

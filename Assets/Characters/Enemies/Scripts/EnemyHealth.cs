@@ -10,29 +10,27 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private GameObject EnemyHealthBar;
     [SerializeField] private GameObject HealthBarCanvas;
     [SerializeField] private float EnemyMaxHealth;
-    private float EnemyCurrentHealth;
     private Animator EnemyAnimator;
     void Start()
     {
         EnemyAnimator = GetComponent<Animator>();
-        EnemyCurrentHealth = EnemyMaxHealth;
+        EnemyControllerScript.EnemyCurrentHealth = EnemyMaxHealth;
         EnemyControllerScript.EnemyMaxHealth = EnemyMaxHealth;
     }
     private void Update()
     {
-        EnemyControllerScript.EnemyCurrentHealth = EnemyCurrentHealth;
     }
 
     void FixedUpdate()
     {
         EnemyHealthBar.GetComponent<DisplayEnemyHealth>().MaxHealth = EnemyMaxHealth;
-        EnemyHealthBar.GetComponent<DisplayEnemyHealth>().CurrentHealth = EnemyCurrentHealth;
+        EnemyHealthBar.GetComponent<DisplayEnemyHealth>().CurrentHealth = EnemyControllerScript.EnemyCurrentHealth;
     }
     public void EnemyDamage(float damage)
     {
-        EnemyCurrentHealth -= damage;
+        EnemyControllerScript.EnemyCurrentHealth -= damage;
         EnemyAnimator.SetTrigger("Hit");
-        if (EnemyCurrentHealth <= 0)
+        if (EnemyControllerScript.EnemyCurrentHealth <= 0)
         {
             EnemyAnimator.SetBool("Die", true);
             Rigidbody2D rigidbody2D =GetComponent<Rigidbody2D>();

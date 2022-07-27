@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private KeyCode MoveLeftButton;
     [SerializeField] private KeyCode JumpButton;
     [SerializeField] private KeyCode CrouchButton;
-    [SerializeField] private KeyCode ReleaseTheLedgeBTN;
+    //[SerializeField] private KeyCode ReleaseTheLedgeBTN;
 
     [Space(5)]
     [Header("Wall Jump Settings")]
@@ -27,10 +27,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Vector2 RunningSpeed;
 
 
-    [SerializeField] private GameObject TopClimbObject;
+    /*[SerializeField] private GameObject TopClimbObject;
     [SerializeField] private GameObject BottomClimbObject;
     [SerializeField] private float ClimbRayDistance;
-    [SerializeField] private LayerMask GroundLayer;
+    [SerializeField] private LayerMask GroundLayer;*/
 
 
     #endregion
@@ -44,17 +44,18 @@ public class PlayerMovement : MonoBehaviour
 
 
     private bool Jump;
+    private bool CanWallJump;
     private bool MoveLeft;
     private bool MoveRight;
 
     private bool Right = true, Left = false; //Direction Controls
 
-    private bool CornerGrb=false;
+    /*private bool CornerGrb=false;
     private bool CanGrab=true;
 
     private bool ClimbUp;
     private bool ReleaseTheLedge;
-    private Vector2 CornerPos;
+    private Vector2 CornerPos;*/
     #endregion
 
     private void Start()
@@ -68,7 +69,10 @@ public class PlayerMovement : MonoBehaviour
     #region Input Control
     void Update()
     {
+        Physics2D.IgnoreLayerCollision (3, 7, !ProgressManagerScript.PlayerIsVisible);
         InputControl();
+        CanWallJump= WallSlideControl();
+
     }
 
 
@@ -90,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
             MainAnimator.SetBool("Run", false);
         }
 
-        if (Input.GetKeyDown(JumpButton)&&(ProgressManagerScript.IsOnTheGround || WallSlideControl()) && ProgressManagerScript.CurrentStamina >= 7)//JUMP
+        if (Input.GetKeyDown(JumpButton)&&(ProgressManagerScript.IsOnTheGround || CanWallJump) && ProgressManagerScript.CurrentStamina >= 7)//JUMP
         {
             Jump = true; //it will set to false after executing jump function
             MainAnimator.SetBool("Jump", true);
@@ -101,13 +105,14 @@ public class PlayerMovement : MonoBehaviour
         {
             ProgressManagerScript.IsCrouch = !ProgressManagerScript.IsCrouch;
             MainAnimator.SetBool("IsCrouch", ProgressManagerScript.IsCrouch);
+            
         }
 
-        if(CornerGrb)
+        /*if(CornerGrb)
         {
             ClimbUp=Input.GetKeyDown(JumpButton);
             ReleaseTheLedge = Input.GetKeyDown(ReleaseTheLedgeBTN);
-        }
+        }*/
 
     }
     #endregion
@@ -117,22 +122,23 @@ public class PlayerMovement : MonoBehaviour
     {
         JumpFunc();
         MoveFunc();
-        WallSlideControl();
-        ClimbFunc();
+
+
+        // ClimbFunc();
     }
 
     void JumpFunc()
     {
         if (Jump)
         {
-            if (!WallSlideControl())
+            if (!CanWallJump)
             {
                 MainRB.AddForce(JumpForce * Time.deltaTime);
             }
             else
             {
-                MainRB.AddForce(WallJumpForce * Time.deltaTime);
                 FlipTheCharacter(!ProgressManagerScript.CharacterDirection);
+                MainRB.AddForce(WallJumpForce * Time.deltaTime);//new Vector2(WallJumpForce.x * transform.right.x * Time.deltaTime, WallJumpForce.y*Time.deltaTime));
             }
             Jump = false;
         }
@@ -155,13 +161,13 @@ public class PlayerMovement : MonoBehaviour
         if (Direction==Right)
         {
              transform.eulerAngles = new Vector3(0, 0, 0);
-             WallJumpForce.x = -10000;
+            WallJumpForce.x = Mathf.Abs(WallJumpForce.x);
              ProgressManagerScript.CharacterDirection = Right;
         }
         else if (Direction==Left)
         {
             transform.eulerAngles = new Vector3(0, 180, 0);
-            WallJumpForce.x = 10000;
+            WallJumpForce.x =-Mathf.Abs(WallJumpForce.x);
             ProgressManagerScript.CharacterDirection = Left;
         }
     }
@@ -169,76 +175,13 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-    void ClimbFunc()
-    {
-
-        RaycastHit2D TopRay = Physics2D.Raycast(TopClimbObject.transform.position, transform.right, ClimbRayDistance, GroundLayer);
-        RaycastHit2D BottomRay = Physics2D.Raycast(BottomClimbObject.transform.position, transform.right, ClimbRayDistance, GroundLayer);
-
-        
-
-        if (!TopRay && BottomRay && CanGrab)
-        {
-          //  CapsuleCollider2D capsuleCollider2D = new CapsuleCollider2D();
-          //  capsuleCollider2D.enabled = false;
-            CornerGrb = true;
-            CornerPos = BottomRay.point;
-            //transform.position = new Vector3(CornerPos.x, Mathf.Floor(CornerPos.y), 0);
-            transform.position =  Vector3.Lerp(transform.position,new Vector3(CornerPos.x, Mathf.Floor(CornerPos.y), 0),Mathf.SmoothStep(0.2f,1,0.05f));
-
-            MainRB.constraints = RigidbodyConstraints2D.FreezeAll;
-            MainAnimator.SetBool("GrabCorner", true);
-            ProgressManagerScript.CanMove = false;
-            ProgressManagerScript.CanAim=false;
-            ///boxcol
-
-        }
-
-        if (CornerGrb)
-        {
-            if (ClimbUp)
-            {
-                MainRB.constraints = RigidbodyConstraints2D.None;
-                MainRB.constraints = RigidbodyConstraints2D.FreezeRotation;
-                CornerGrb = false;
-                MainAnimator.SetTrigger("Climb");
-                MainAnimator.SetBool("GrabCorner", false);
-                ProgressManagerScript.CanMove = true;
-                CanGrab = false;
-                MainRB.AddForce(JumpForce * Time.deltaTime);
-                ClimbUp = false;
-            }
-
-            if (ReleaseTheLedge)
-            {
-                MainRB.constraints = RigidbodyConstraints2D.None;
-                MainRB.constraints = RigidbodyConstraints2D.FreezeRotation;
-                CornerGrb = false;
-                MainAnimator.SetBool("GrabCorner", false);
-                ProgressManagerScript.CanMove = true;
-                CanGrab = false;
-                ProgressManagerScript.CanAim = true;
-                ReleaseTheLedge=false;
-               // CapsuleCollider2D capsuleCollider2D = new CapsuleCollider2D();
-               // capsuleCollider2D.enabled = true;
-            }
-        }
-    }
-
-    void EndOfClimbing()
-    {
-        CanGrab = true;
-        ProgressManagerScript.CanAim = true;
-        //CapsuleCollider2D capsuleCollider2D = new CapsuleCollider2D();
-        //capsuleCollider2D.enabled = true;
-
-    }
-
     #region Wall And Ground Detection
     private bool WallSlideControl()
     {
+        
         Collider2D WallDetector = Physics2D.OverlapCircle(WallJumpCircleCenter.position, WallJumpCircleRadius, WallLayer);
         bool DoSlide = (WallDetector != null && !ProgressManagerScript.IsOnTheGround);
+
         MainAnimator.SetBool("WallSlide", DoSlide);
         return (DoSlide);
     }
@@ -256,7 +199,7 @@ public class PlayerMovement : MonoBehaviour
             ProgressManagerScript.IsOnTheGround = true;
             MainAnimator.SetBool("Falling", false);
             MainAnimator.SetBool("Jump", false);
-            CanGrab = true;
+            //CanGrab = true;
         }
     }
 
@@ -271,7 +214,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     #endregion
-
 
 
 
@@ -315,4 +257,5 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     #endregion
+
 }

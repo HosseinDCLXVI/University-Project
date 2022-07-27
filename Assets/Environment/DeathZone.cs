@@ -21,7 +21,7 @@ public class DeathZone : MonoBehaviour
     {
         if(collision.tag =="Player")
         {
-            collision.GetComponent<PlayerHealth>().GameOver();
+            collision.GetComponent<PlayerHealth>().InvokeGameOver();
         }
     }
 }

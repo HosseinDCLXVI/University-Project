@@ -6,6 +6,7 @@ public class EnemyPatrol : MonoBehaviour
 {
 
     #region Inspector Variables
+    [SerializeField] private bool GuardPost;
     [SerializeField] private EnemyController EnemyControllerScript;
     [SerializeField] private Transform EnemyHealthCanvas;
 
@@ -17,21 +18,21 @@ public class EnemyPatrol : MonoBehaviour
 
     [Header("Vision Settings")]
     [SerializeField] private LayerMask PlayerLayer;
-    [Range(3f, 10f)]
-    [SerializeField] private float EnemyVisionDistance;
+    //[Range(3f, 10f)]
+    //[SerializeField] private float EnemyVisionDistance;
     [Range(1f, 4f)]
     [SerializeField] private float EnemyBackwardVisionDistance;
 
-    [SerializeField] private bool PlayerShouldStayUndetected;
+    [SerializeField] public bool PlayerShouldStayUndetected;
 
     #endregion
 
     #region Patrol Variables
     private Animator EnemyAnimator;
-    private bool EnemyDirection, Right = true, Left = false;
-    private bool EnemyCanSeeThePlayer;
+    private bool Right = true, Left = false;
+    //private bool EnemyCanSeeThePlayer;
     private bool CanMove;
-    private bool EnemyIsAwareOfThePlayer;
+    //[HideInInspector] public bool EnemyIsAwareOfThePlayer;
     private bool GotOutOfZoneBackwards;
     private float TimeInTheBorder = 0;
     #endregion
@@ -52,7 +53,15 @@ public class EnemyPatrol : MonoBehaviour
     {
         EnemyAnimator = GetComponent<Animator>();
     }
-
+    private void Awake()
+    {
+        EnemyAnimator = GetComponent<Animator>();
+        EnemyIsAwake = EnemyControllerScript.EnemyIsAwake;
+        if (EnemyIsAwake)
+        {
+            EnemyAnimator.Play("Idle");
+        }
+    }
     private void Update()
     {
         if (EnemyIsAwake)
@@ -62,6 +71,7 @@ public class EnemyPatrol : MonoBehaviour
 
         SyncDataWithControlScript();
         CheckIfEnemyCanSeeThePlayer();
+        if(!GuardPost)
         EnemyFolowThePlayer();
 
         if (EnemyControllerScript.CanWalkBackward && EnemyControllerScript.IsRanged)
@@ -94,17 +104,17 @@ public class EnemyPatrol : MonoBehaviour
 
     void EnemyFolowThePlayer()
     {
-        if (EnemyIsAwareOfThePlayer)
+        if (EnemyControllerScript.EnemyIsAwareOfThePlayer)
         {
             if (PlayerIsInsideTheZone && EnemyIsInsideTheZone)
             {
                 if (PlayerPositionInTheZone - EnemyPositionInTheZone > 0)
                 {
-                    EnemyDirection = Right;
+                    EnemyControllerScript.EnemyDirection = Right;
                 }
                 else if (PlayerPositionInTheZone - EnemyPositionInTheZone < 0)
                 {
-                    EnemyDirection = Left;
+                    EnemyControllerScript.EnemyDirection = Left;
                 }
             }
             else if (!PlayerIsInsideTheZone && !EnemyIsInsideTheZone)
@@ -135,7 +145,7 @@ public class EnemyPatrol : MonoBehaviour
             return;
         ///
         if (!GotOutOfZoneBackwards)
-            EnemyDirection = !EnemyDirection;
+            EnemyControllerScript.EnemyDirection = !EnemyControllerScript.EnemyDirection;
 
         CanMove = true;
         EnemyIsInsideTheZone = true;
@@ -147,12 +157,12 @@ public class EnemyPatrol : MonoBehaviour
         {
             EnemyAnimator.SetBool("Walk", true);
             transform.Translate(EnemyWalkingSpeed * Time.deltaTime);
-            if (EnemyDirection == Right)
+            if (EnemyControllerScript.EnemyDirection == Right)
             {
                 transform.eulerAngles = new Vector3(0, 0, 0);
                 EnemyHealthCanvas.eulerAngles = new Vector3(0, 0, 0);
             }
-            else if (EnemyDirection == Left)
+            else if (EnemyControllerScript.EnemyDirection == Left)
             {
                 transform.eulerAngles = new Vector3(0, 180, 0);
                 EnemyHealthCanvas.eulerAngles = new Vector3(0, 0, 0);
@@ -166,23 +176,19 @@ public class EnemyPatrol : MonoBehaviour
 
     void CheckIfEnemyCanSeeThePlayer()
     {
-        RaycastHit2D RaycastHit = Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.right), EnemyVisionDistance, PlayerLayer);
+        /*RaycastHit2D RaycastHit = Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.right), EnemyVisionDistance, PlayerLayer);
         if (RaycastHit)
         if (RaycastHit.collider.GetComponent<ProgressManager>().PlayerIsVisible)
         {
-            
-            EnemyCanSeeThePlayer = true;
-            EnemyIsAwareOfThePlayer = true;
+
+            EnemyControllerScript.EnemyCanSeeThePlayer = true;
+            EnemyControllerScript.EnemyIsAwareOfThePlayer = true;
             StelthMission(RaycastHit);
         }
         else
         {
-            EnemyCanSeeThePlayer = false;
-        }
-        if (!EnemyControllerScript.PlayerIsInsideTheZone && !EnemyCanSeeThePlayer)
-        {
-            EnemyIsAwareOfThePlayer = false;
-        }
+            EnemyControllerScript.EnemyCanSeeThePlayer = false;
+        }*/
 
         RaycastHit2D BackwardRaycastHit = Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.left), EnemyBackwardVisionDistance, PlayerLayer);
         if(BackwardRaycastHit)
@@ -190,24 +196,36 @@ public class EnemyPatrol : MonoBehaviour
         {
             if (PlayerIsInsideTheZone && EnemyIsInsideTheZone)
             {
-                EnemyCanSeeThePlayer = true;
-                EnemyIsAwareOfThePlayer = true;
+                EnemyControllerScript.EnemyCanSeeThePlayer = true;
+                EnemyControllerScript.EnemyIsAwareOfThePlayer = true;
                 StelthMission(BackwardRaycastHit);
             }
         }
+        if (!EnemyControllerScript.PlayerIsInsideTheZone && !EnemyControllerScript.EnemyCanSeeThePlayer && EnemyControllerScript.EnemyIsAwareOfThePlayer)
+        {
+            if(!IsInvoking("ForgetAboutThePlayer"))
+            {
+                Invoke("ForgetAboutThePlayer", 5);
+
+            }
+        }
     }
-    void StelthMission(RaycastHit2D Player)
+    void ForgetAboutThePlayer()
+    {
+        EnemyControllerScript.EnemyIsAwareOfThePlayer = false;
+    }
+    public void StelthMission(RaycastHit2D Player)
     {
         if (PlayerShouldStayUndetected)
         {
-            Player.collider.GetComponent<PlayerHealth>().GameOver();
+            Player.collider.GetComponent<PlayerHealth>().InvokeGameOver();
         }
     }
     #endregion
     #region KeepDistanceFromPlayer
     void KeepDistanceFromPlayer()
     {
-        if (EnemyIsAwareOfThePlayer)
+        if (EnemyControllerScript.EnemyIsAwareOfThePlayer)
         {
             if (Mathf.Abs(PlayerPositionInTheZone - EnemyPositionInTheZone) <= EnemyControllerScript.EnemyAttackRange)
             {
@@ -255,7 +273,7 @@ public class EnemyPatrol : MonoBehaviour
     void TeleportToRight()
     {
         transform.position = new Vector2(EnemyControllerScript.ZonesRightBorder, transform.position.y);
-        EnemyDirection = !EnemyDirection;
+        EnemyControllerScript.EnemyDirection = !EnemyControllerScript.EnemyDirection;
         GotOutOfZoneBackwards = false;
         EnemyAnimator.Play("GhostAppears");
 
@@ -263,7 +281,7 @@ public class EnemyPatrol : MonoBehaviour
     void TeleportToLeft()
     {
         transform.position = new Vector2(EnemyControllerScript.ZonesLeftBorder, transform.position.y);
-        EnemyDirection = !EnemyDirection;
+        EnemyControllerScript.EnemyDirection = !EnemyControllerScript.EnemyDirection;
         GotOutOfZoneBackwards = false;
         EnemyAnimator.Play("GhostAppears");
     }
@@ -272,6 +290,7 @@ public class EnemyPatrol : MonoBehaviour
     private void ChangeBodyType(RigidbodyType2D rigidbodyType2D)
     {
         Rigidbody2D EnemyRigidbody2D = GetComponent<Rigidbody2D>();
+        if(EnemyRigidbody2D.bodyType!=RigidbodyType2D.Static)
         EnemyRigidbody2D.bodyType = rigidbodyType2D;
     }
 }

@@ -9,14 +9,17 @@ using UnityEngine.Rendering;
 public class ProgressManager : MonoBehaviour
 {
 
+     public GameObject PauseMenu;
+     public GameObject GameOver;
+     public GameObject GameCompletion;
     //comes from PlayerAttack
     [HideInInspector] public float time;
     [HideInInspector] public float Health; //Comes from PlayerHealth
     [HideInInspector] public int Totalkills = 0;
     [HideInInspector] public float KillPoints;
     [HideInInspector] public int TotalScore;
-    [HideInInspector] public Text TimeShowCase;
-    [HideInInspector] public Text PointShowCase;
+     public Text TimeShowCase;
+     public Text PointShowCase;
     [HideInInspector] public int level;
     [HideInInspector] public int CurrentFirePoint;
     [HideInInspector] public float CurrentStamina;
@@ -87,15 +90,15 @@ public class ProgressManager : MonoBehaviour
     #region Game Management
     private void Start()
     {
+        CharacterDirection = Right;
         CanAim = true;
     }
     void Update()
     {
-            PointShowCase.text = KillPoints.ToString() + " Points";
-
-            Timer();
-            TotalScoreCalculator();
-            InGameCursorManager();
+        PointShowCase.text = KillPoints.ToString() + " Points";
+        Timer();
+        TotalScoreCalculator();
+        InGameCursorManager();
     }
     void Timer()
     {
@@ -118,6 +121,7 @@ public class ProgressManager : MonoBehaviour
         {
             Cursor.visible = true;
         }
+
     }
     #endregion
 }

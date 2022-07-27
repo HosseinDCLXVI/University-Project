@@ -164,7 +164,8 @@ public class PlayerAttack : MonoBehaviour
     }
     void SlowmoAiming()
     {
-
+       if(Time.timeScale!=0)
+        {
         if(IsSlomo)
         {
             if(SlomoAimingEffect == 1)
@@ -185,6 +186,7 @@ public class PlayerAttack : MonoBehaviour
              SlomoAimingEffect = 1F;
         }
         Time.timeScale = SlomoAimingEffect;
+        }
     }
     void ShootingCoolDown()
     {
@@ -201,6 +203,7 @@ public class PlayerAttack : MonoBehaviour
         Arrow = Instantiate(Arrow, ArrowStartPoint.position, ArrowRotation);
         Arrow.SetActive(true);
         Rigidbody2D ArrowRigidbody = Arrow.GetComponent<Rigidbody2D>();
+        Arrow.GetComponent<ArrowScript>().PlayerHealthScript=GetComponent<PlayerHealth>();
         ArrowRigidbody.bodyType = RigidbodyType2D.Dynamic;
         ArrowRigidbody.rotation = ShootingAngle;
         ArrowRigidbody.AddRelativeForce(new Vector2(ArrowForce, 0f));

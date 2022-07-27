@@ -46,7 +46,11 @@ public class PlayerHealth : MonoBehaviour
         }
 
     }
-    public void GameOver()
+    public void InvokeGameOver(float InvokeTime=0)
+    {
+        Invoke("GameOver", InvokeTime);
+    }
+    void GameOver()
     {
         GameOverCanvas.SetActive(true);
         ProgressManagerScript.BlurEffect.weight = 1f;

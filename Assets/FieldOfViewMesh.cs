@@ -24,24 +24,30 @@ public class FieldOfViewMesh : MonoBehaviour
         meshRenderer.sortingOrder = 0;
 
     }
+
     private void Update()
     {
-        if(ProgressManagerScript!=null)
-        {
-            CharacterDirection =ProgressManagerScript.CharacterDirection;
-        }
-        else if(EnemyControllerScript!=null)
-        {
-           // CharacterDirection=EnemyControllerScript.D
-        }
-
-        transform.position=ProgressManagerScript.GetComponent<Transform>().position;
         Vector2[] FieldOfViewRange = CalculateFieldOfViewRange();
-        RaycastHit2D[] FieldOfViewRaycastHit2D = CreateFieldOfViewRaycast(FieldOfViewRange);
+        RaycastHit2D[] FieldOfViewRaycastHit2D = CreateFieldOfViewRaycast(FieldOfViewRange,WallAndGroundLayer);
         Vector3[] Vertices = FieldOfViewMeshVerticesCalculator(FieldOfViewRange, FieldOfViewRaycastHit2D);
         Vector2[] UV = FieldOfViewMeshUvCalculator(FieldOfViewRange, FieldOfViewRaycastHit2D);
         int[] Triangles = FieldOfViewMeshTrianglesCalculator(Vertices);
         CreateMesh(Vertices,Triangles,UV);
+
+        if(ProgressManagerScript!=null)
+        {
+            CharacterDirection =ProgressManagerScript.CharacterDirection;
+            transform.position = ProgressManagerScript.GetComponent<Transform>().position;
+
+        }
+        else if(EnemyControllerScript!=null)
+        {
+            CharacterDirection = EnemyControllerScript.EnemyDirection;
+            transform.position = EnemyControllerScript.GetComponent<Transform>().position;
+            EnemyEye(CreateFieldOfViewRaycast(FieldOfViewRange, PlayerLayer));
+        }
+
+
 
     }
 
@@ -51,41 +57,56 @@ public class FieldOfViewMesh : MonoBehaviour
         float AngularDistanceBetweenRays = FovAngle / NumberOfRays;
 
         int x = 0;
-        if (ProgressManagerScript.CharacterDirection)
-        {
-            for (float i = FovAngle; i >= -FovAngle; i -= AngularDistanceBetweenRays)
+ 
+            if (CharacterDirection)
             {
-                FieldOfViewRange[x] = new Vector3(Mathf.Cos(i * Mathf.Deg2Rad) * FovDistance, Mathf.Sin(i * Mathf.Deg2Rad) * FovDistance);
-                x++;
+                for (float i = FovAngle; i >= -FovAngle; i -= AngularDistanceBetweenRays)
+                {
+                    FieldOfViewRange[x] = new Vector3(Mathf.Cos(i * Mathf.Deg2Rad) * FovDistance, Mathf.Sin(i * Mathf.Deg2Rad) * FovDistance);
+                    x++;
+                }
             }
-        }
-        else
-        {
-            for (float i = FovAngle; i >= -FovAngle; i -= AngularDistanceBetweenRays)
+            else
             {
-                FieldOfViewRange[x] = new Vector3(Mathf.Cos(i * Mathf.Deg2Rad) * -FovDistance, Mathf.Sin(i * Mathf.Deg2Rad) * FovDistance);
-                x++;
+                for (float i = FovAngle; i >= -FovAngle; i -= AngularDistanceBetweenRays)
+                {
+                    FieldOfViewRange[x] = new Vector3(Mathf.Cos(i * Mathf.Deg2Rad) * -FovDistance, Mathf.Sin(i * Mathf.Deg2Rad) * FovDistance);
+                    x++;
+                }
+                Array.Reverse(FieldOfViewRange);
             }
-            Array.Reverse(FieldOfViewRange);
-        }
-        
-
         return FieldOfViewRange;
     }
 
-    RaycastHit2D[] CreateFieldOfViewRaycast(Vector2[] FieldOfViewRange)
+    RaycastHit2D[] CreateFieldOfViewRaycast(Vector2[] FieldOfViewRange,LayerMask layer)
     {
         RaycastHit2D[] raycastHit2D = new RaycastHit2D[FieldOfViewRange.Length];
 
         for (int i = 0; i < FieldOfViewRange.Length; i++)
         {
-            raycastHit2D[i] = Physics2D.Raycast(transform.position, FieldOfViewRange[i], FovDistance, WallAndGroundLayer);
+            raycastHit2D[i] = Physics2D.Raycast(transform.position, FieldOfViewRange[i], FovDistance, layer);
             //Debug.DrawRay(transform.position,RayEndPossition[i],Color.red);
         }
 
         return raycastHit2D;
     }
 
+    void EnemyEye(RaycastHit2D[] EnemyFieldOfView)
+    {
+        for(int i = 0; i < EnemyFieldOfView.Length; i++)
+        if (EnemyFieldOfView[i])
+            if (EnemyFieldOfView[i].collider.GetComponent<ProgressManager>().PlayerIsVisible)
+            {
+
+                EnemyControllerScript.EnemyCanSeeThePlayer = true;
+                EnemyControllerScript.EnemyIsAwareOfThePlayer = true;
+               EnemyControllerScript.GetComponent<EnemyPatrol>().StelthMission(EnemyFieldOfView[i]);
+            }
+            else
+            {
+                EnemyControllerScript.EnemyCanSeeThePlayer = false;
+            }
+    }
     Vector3[] FieldOfViewMeshVerticesCalculator(Vector2[] FieldOfViewRange, RaycastHit2D[] FieldOfViewRaycast = null)
     {
         Vector3[] Vertices = new Vector3[NumberOfRays * 2 + 2];

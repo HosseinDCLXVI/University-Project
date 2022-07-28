@@ -938,7 +938,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7329010068793695258}
   - component: {fileID: 7329010068793695259}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Body
   m_TagString: Body
   m_Icon: {fileID: 0}
@@ -995,7 +995,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7329010069266725547}
   - component: {fileID: 7329010069266725544}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Head
   m_TagString: Head
   m_Icon: {fileID: 0}
@@ -1052,7 +1052,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7329010070135270290}
   - component: {fileID: 7329010070135270291}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Feet
   m_TagString: Feet
   m_Icon: {fileID: 0}

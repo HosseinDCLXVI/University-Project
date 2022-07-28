@@ -258,6 +258,7 @@ public class PlayerAttack : MonoBehaviour
         {
             ProgressManagerScript.CurrentFirePoint += 2;
             SingleEnemy.GetComponent<EnemyHealth>().EnemyDamage(Damage);
+            //GetComponent<PlayerSoundManager>().PlayerHittingEnemy();
             if (SingleEnemy.GetComponent <EnemyController>().EnemyCurrentHealth<=0)
             {
                 if (KillCheck!=SingleEnemy.gameObject) // so that multiple combo attacks on a dead enemy dont encrease the score

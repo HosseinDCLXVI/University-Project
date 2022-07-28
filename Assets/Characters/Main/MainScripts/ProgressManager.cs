@@ -92,6 +92,7 @@ public class ProgressManager : MonoBehaviour
     {
         CharacterDirection = Right;
         CanAim = true;
+        Time.timeScale = 1;
     }
     void Update()
     {
@@ -99,6 +100,11 @@ public class ProgressManager : MonoBehaviour
         Timer();
         TotalScoreCalculator();
         InGameCursorManager();
+
+        if (GameOver.activeSelf)
+        {
+            Time.timeScale = 0;
+        }
     }
     void Timer()
     {
@@ -113,6 +119,8 @@ public class ProgressManager : MonoBehaviour
     }
     void InGameCursorManager()
     {
+
+
         if (Time.timeScale == 1)
         {
             Cursor.visible = false;

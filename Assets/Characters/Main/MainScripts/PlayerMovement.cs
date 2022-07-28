@@ -199,6 +199,11 @@ public class PlayerMovement : MonoBehaviour
             ProgressManagerScript.IsOnTheGround = true;
             MainAnimator.SetBool("Falling", false);
             MainAnimator.SetBool("Jump", false);
+
+            if(collision.tag=="Ground")
+            {
+                GetComponent<PlayerSoundManager>().PlayRunnigSound();
+            }
             //CanGrab = true;
         }
     }

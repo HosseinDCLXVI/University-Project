@@ -212,7 +212,8 @@ public class EnemyPatrol : MonoBehaviour
     }
     void ForgetAboutThePlayer()
     {
-        EnemyControllerScript.EnemyIsAwareOfThePlayer = false;
+        if (!EnemyControllerScript.PlayerIsInsideTheZone && !EnemyControllerScript.EnemyCanSeeThePlayer && EnemyControllerScript.EnemyIsAwareOfThePlayer)
+            EnemyControllerScript.EnemyIsAwareOfThePlayer = false;
     }
     public void StelthMission(RaycastHit2D Player)
     {
@@ -245,7 +246,7 @@ public class EnemyPatrol : MonoBehaviour
     #region InZoneTeleport
     void InZoneTeleport()
     {
-        if (EnemyControllerScript.ZonesLeftBorder >= transform.position.x && GotOutOfZoneBackwards)
+        if (EnemyControllerScript.ZonesLeftBorder >= transform.position.x && GotOutOfZoneBackwards&&PlayerIsInsideTheZone)
         {
             TimeInTheBorder += Time.deltaTime;
             if (TimeInTheBorder >= InZoneTeleportDelay)
@@ -255,7 +256,7 @@ public class EnemyPatrol : MonoBehaviour
                 Invoke("TeleportToRight", 0.5f);
             }
         }
-        else if (EnemyControllerScript.ZonesRightBorder <= transform.position.x && GotOutOfZoneBackwards)
+        else if (EnemyControllerScript.ZonesRightBorder <= transform.position.x && GotOutOfZoneBackwards&&PlayerIsInsideTheZone)
         {
             TimeInTheBorder += Time.deltaTime;
             if (TimeInTheBorder >= InZoneTeleportDelay)

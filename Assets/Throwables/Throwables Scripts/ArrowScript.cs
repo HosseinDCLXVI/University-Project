@@ -10,9 +10,19 @@ public class ArrowScript : MonoBehaviour
     [SerializeField] private int HeadShotDamage;
     [SerializeField] private int BodyShotDamage; 
     [SerializeField] private int FeetShotDamage;
+
+    private AudioSource ArrowAudioSource;
+    [SerializeField] private AudioClip[]Arrow ;
+    [SerializeField] private AudioClip[]ArrowHit ;
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
+        ArrowAudioSource=GetComponent<AudioSource>();
+
+        int x=Random.Range(0,Arrow.Length);
+        ArrowAudioSource.clip=Arrow[x];
+        ArrowAudioSource.Play();
+
     }
 
     private void FixedUpdate()
@@ -24,10 +34,15 @@ public class ArrowScript : MonoBehaviour
         if(collision.tag=="Ground")
         {
             rigidbody.bodyType = RigidbodyType2D.Static;
+            int x = Random.Range(0, ArrowHit.Length);
+            ArrowAudioSource.clip = ArrowHit[x];
+            ArrowAudioSource.Play();
         }
         else if(collision.tag=="Wall")
         {
             rigidbody.bodyType = RigidbodyType2D.Static;
+            int x = Random.Range(0, ArrowHit.Length);
+            ArrowAudioSource.clip = Arrow[x];
         }
         else if(collision.tag =="Head")
         {          
@@ -55,7 +70,6 @@ public class ArrowScript : MonoBehaviour
     {
         if (collision.GetComponentInParent<EnemyController>().EnemyCurrentHealth > 0)
         {
-            Debug.Log(collision.GetComponentInParent<EnemyController>().EnemyCurrentHealth);
             collision.GetComponentInParent<EnemyController>().EnemyIsAwareOfThePlayer = true;
             if (collision.GetComponentInParent<EnemyPatrol>().PlayerShouldStayUndetected)
             {

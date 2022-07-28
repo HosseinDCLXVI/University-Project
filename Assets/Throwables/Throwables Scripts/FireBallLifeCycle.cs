@@ -20,6 +20,7 @@ public class FireBallLifeCycle : MonoBehaviour
         Collider2D Wall = Physics2D.OverlapCircle(transform.position + Offset, Radious, WallAndGround);
         if (Wall != null)
         {
+            //GetComponent<AudioSource>().Stop();
             Destroy(this.gameObject);
         }
     }

@@ -23,7 +23,7 @@ public class PlayerStamina : MonoBehaviour
     {
         if (ProgressManagerScript.CurrentStamina == 0)
         {
-            Invoke("StaminaGain", 2);
+            Invoke("StaminaRegain", 2);
         }
         else
         {

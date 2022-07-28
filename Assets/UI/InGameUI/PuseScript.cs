@@ -9,9 +9,14 @@ public class PuseScript : MonoBehaviour
 {
     public GameObject PauseMenu;
     public GameObject PauseSettings;
-    bool Paused = false;
+    bool Paused;
     public Volume GlobalVolume;
 
+     void Start()
+    {
+        Paused = false;
+        GlobalVolume.weight = 0f;
+    }
     private void Update()
     {
         PauseEsc();

@@ -13,11 +13,11 @@ public class FieldOfViewMesh : MonoBehaviour
     [SerializeField] private ProgressManager ProgressManagerScript;
     [SerializeField] private EnemyController EnemyControllerScript ;
     [SerializeField] SortingLayer sortingLayer;
+      private MeshRenderer meshRenderer;
 
     bool CharacterDirection, Right = true, Left = false;
     private void Start()
     {
-        MeshRenderer meshRenderer;
         meshRenderer = GetComponent<MeshRenderer>();
 
         meshRenderer.sortingLayerName = "Character";
@@ -32,12 +32,14 @@ public class FieldOfViewMesh : MonoBehaviour
         Vector3[] Vertices = FieldOfViewMeshVerticesCalculator(FieldOfViewRange, FieldOfViewRaycastHit2D);
         Vector2[] UV = FieldOfViewMeshUvCalculator(FieldOfViewRange, FieldOfViewRaycastHit2D);
         int[] Triangles = FieldOfViewMeshTrianglesCalculator(Vertices);
-        CreateMesh(Vertices,Triangles,UV);
+        CreateMesh(Vertices, Triangles, UV);
 
-        if(ProgressManagerScript!=null)
+        if (ProgressManagerScript!=null)
         {
             CharacterDirection =ProgressManagerScript.CharacterDirection;
             transform.position = ProgressManagerScript.GetComponent<Transform>().position;
+            CreateMesh(Vertices, Triangles, UV);
+
 
         }
         else if(EnemyControllerScript!=null)
@@ -45,6 +47,19 @@ public class FieldOfViewMesh : MonoBehaviour
             CharacterDirection = EnemyControllerScript.EnemyDirection;
             transform.position = EnemyControllerScript.GetComponent<Transform>().position;
             EnemyEye(CreateFieldOfViewRaycast(FieldOfViewRange, PlayerLayer));
+
+            if(EnemyControllerScript.EnemyCurrentHealth<0||!EnemyControllerScript.EnemyIsAwake)
+            {
+                meshRenderer.enabled=false ;
+            }
+            else
+            {
+                meshRenderer.enabled=true ;
+            }
+        }
+        else if(EnemyControllerScript==null&&ProgressManagerScript==null)
+        {
+            meshRenderer.enabled = false ;
         }
 
 

@@ -597,7 +597,7 @@ TextureImporter:
       213: 3139171135254384747
     second: background_0_197
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -618,6 +618,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -656,6 +657,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -683,6 +685,42 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -4864,6 +4902,205 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      background_0_185: 7720995239759158322
+      background_0_18: 5365484511727399760
+      background_0_86: -8735082984123948529
+      background_0_44: 3578457162487712849
+      background_0_109: -4260166627680760197
+      background_0_97: -6181772348266987356
+      background_0_2: -9020393605465695847
+      background_0_117: 417244313367929027
+      background_0_104: 2800735770868691135
+      background_0_40: 3324865089723299757
+      background_0_39: 3717934114653857873
+      background_0_112: -194446824345407313
+      background_0_71: 3385123949794397291
+      background_0_121: 7321582312819250973
+      background_0_12: -3252448261867364272
+      background_0_197: 3139171135254384747
+      background_0_130: 2997686164265798238
+      background_0_47: -2333118066154075948
+      background_0_31: 3905731322795928345
+      background_0_122: 3080527104594624718
+      background_0_46: -6434091763363499831
+      background_0_167: 7558494562015059155
+      background_0_58: -5745626690129821544
+      background_0_0: 2340564595809866820
+      background_0_76: -7768704263569126784
+      background_0_131: 449397563195783122
+      background_0_172: 5616845077070129523
+      background_0_80: 3295049065436896240
+      background_0_160: -5810275559142886090
+      background_0_195: -3641089941489655375
+      background_0_24: 3523084086145565878
+      background_0_179: 575778057793439849
+      background_0_91: 4058077053689677124
+      background_0_35: -239112346031475870
+      background_0_190: 5875532325192157421
+      background_0_10: 4908176869729754399
+      background_0_32: -2615377970987115511
+      background_0_173: -2430749193484862011
+      background_0_176: 5926328650565495470
+      background_0_174: -60094582614086337
+      background_0_5: -5156224932575900818
+      background_0_21: -3156215701601499462
+      background_0_77: -7083049410465767983
+      background_0_144: -61967502344040063
+      background_0_168: 1496143822143294382
+      background_0_156: 6386869894457035304
+      background_0_50: -8401252292361762553
+      background_0_165: -9121892292217837034
+      background_0_108: -4094476833015997292
+      background_0_138: 3159872470788089225
+      background_0_33: 9000439783473169641
+      background_0_3: 827063941756571890
+      background_0_96: 8469765137601330623
+      background_0_146: -5100911416476864900
+      background_0_103: 1747072929260491781
+      background_0_166: 9221687952169826471
+      background_0_133: -6332573540682413361
+      background_0_125: 200855590074815179
+      background_0_95: 4179583679461196495
+      background_0_101: 4792017904973637932
+      background_0_111: -2479739427023221470
+      background_0_115: 1992374535524606566
+      background_0_59: -8537690636748529426
+      background_0_16: -8321060157809612335
+      background_0_141: -1401259089469380779
+      background_0_83: -4372602355139934717
+      background_0_6: 4038030627304954903
+      background_0_186: -108708473041542883
+      background_0_54: 4739987962548989809
+      background_0_184: 20082187098040683
+      background_0_85: -4425870846761781241
+      background_0_43: 1072721049595090396
+      background_0_51: 7482249946738134525
+      background_0_72: 8856897261116776876
+      background_0_143: -6828102483871173399
+      background_0_66: -1403619269039000836
+      background_0_154: 2859544584858894116
+      background_0_178: 7813986325085570295
+      background_0_84: 3863275563153410462
+      background_0_114: -8246374536034314651
+      background_0_99: -3833174559746362607
+      background_0_170: 5162449584736677844
+      background_0_1: -2951927155685437601
+      background_0_107: -7221603786802115556
+      background_0_27: -2673218182604389372
+      background_0_142: -1481121428362533482
+      background_0_4: -5865125094015436308
+      background_0_67: -7440488235341380047
+      background_0_151: 6974220121905019357
+      background_0_152: 4998758107259004424
+      background_0_135: 8755873694389158823
+      background_0_94: 8691643684618076985
+      background_0_105: 5857968966522085405
+      background_0_53: -6613219520964326126
+      background_0_140: 3794460439904564375
+      background_0_20: -9130790730303228962
+      background_0_189: 2231374077347363846
+      background_0_161: -1886304310743601368
+      background_0_163: 229256963573095189
+      background_0_124: 1170505596908599717
+      background_0_7: 4281774213122005895
+      background_0_15: 664991583516184781
+      background_0_90: 5526869896411587341
+      background_0_194: -6986289234207732641
+      background_0_93: 3410949126436963936
+      background_0_157: -7589668636073205354
+      background_0_132: -1486516543149560087
+      background_0_98: 4330884461085150474
+      background_0_9: -5406808852292477146
+      background_0_49: -2590228690685062054
+      background_0_42: -9181162255301004219
+      background_0_45: 4839743865786782384
+      background_0_13: -224975218572757872
+      background_0_36: 1414199336028118699
+      background_0_34: -8283632465522434616
+      background_0_61: -7264558293243334322
+      background_0_193: 2827916217622241898
+      background_0_28: -1457221826856595147
+      background_0_70: 8101299313980217038
+      background_0_137: -8760784331119042706
+      background_0_69: -2316510714964296173
+      background_0_149: 4917780389620667617
+      background_0_68: -8042670051304064289
+      background_0_38: -3892541720682394153
+      background_0_182: -7196898240454437443
+      background_0_175: -7890773567277457467
+      background_0_192: 7909375478094393479
+      background_0_14: 3534070958202424541
+      background_0_123: -2895152622074247396
+      background_0_79: 4719606624444478932
+      background_0_81: 1958879194388501416
+      background_0_56: -3950281781711907020
+      background_0_19: -4758353850801300970
+      background_0_113: -447312037305926824
+      background_0_187: -8852126074885234032
+      background_0_191: 3801959651391028908
+      background_0_74: -8927413532011595218
+      background_0_188: -688378959373869546
+      background_0_41: -7712114859396169148
+      background_0_158: 844772372952237179
+      background_0_29: -7069436500071203015
+      background_0_118: -5240574903233358078
+      background_0_145: -2815307319721277128
+      background_0_89: -4278256257285351483
+      background_0_136: 9172144384026887709
+      background_0_139: -3915663703580552074
+      background_0_127: -3915185700531003776
+      background_0_63: -8596260017987267396
+      background_0_55: -7154355545536154448
+      background_0_162: -5064286507321378999
+      background_0_62: 7575185150103356427
+      background_0_120: 976804133092726701
+      background_0_17: -2477080588628878027
+      background_0_82: 6117896171432151107
+      background_0_64: -1634848239498656318
+      background_0_180: 49488204138472159
+      background_0_37: 4021713235909242281
+      background_0_100: -4170208976047154275
+      background_0_148: 3065765369699090109
+      background_0_169: 1898723248990715774
+      background_0_22: 8323346689298141047
+      background_0_164: 5679014938767940184
+      background_0_88: -4901067645666126006
+      background_0_75: 3781439554517781152
+      background_0_171: 7636746795170928422
+      background_0_126: 522812491561783637
+      background_0_11: -1165301413933573634
+      background_0_119: 3879288876474410941
+      background_0_8: 782615397140504696
+      background_0_26: 7964083034942756935
+      background_0_52: -9141591513450531270
+      background_0_23: 2075295881529317581
+      background_0_134: -2889081842560502868
+      background_0_30: -2243951150192946777
+      background_0_196: 5355119704751369343
+      background_0_159: 6733324868433843497
+      background_0_25: 3134679116657230967
+      background_0_106: -6617868567151046930
+      background_0_150: 3352203494203992054
+      background_0_92: -1286291291346862492
+      background_0_181: 7057368854151131529
+      background_0_102: -6191422397162293523
+      background_0_129: -9163209827158132858
+      background_0_60: -4969134899023615662
+      background_0_73: 7690771138352467767
+      background_0_78: 7759331248108834794
+      background_0_57: -40741732125853995
+      background_0_128: -1283442987466861291
+      background_0_65: -7890223766452621133
+      background_0_183: 1363604569115458602
+      background_0_177: -4645246239996487381
+      background_0_147: 6963120062610537956
+      background_0_48: -890019657168717506
+      background_0_116: 5950192258159399675
+      background_0_153: 1061472754202553105
+      background_0_87: 760809242044531229
+      background_0_110: 6677544564407511870
+      background_0_155: 1625092972627907695
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

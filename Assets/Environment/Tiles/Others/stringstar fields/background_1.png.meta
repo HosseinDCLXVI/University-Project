@@ -201,7 +201,7 @@ TextureImporter:
       213: -2852577849201544737
     second: background_1_65
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -222,6 +222,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -260,6 +261,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -287,6 +289,42 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -1696,6 +1734,73 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      background_1_30: -7835080797978846257
+      background_1_38: -4078209980162293222
+      background_1_2: 8131834081577316756
+      background_1_63: 8450140170480305279
+      background_1_43: 4569109219493956976
+      background_1_54: -7212498613930309185
+      background_1_41: 7481468605017863545
+      background_1_9: 2648561618604359834
+      background_1_4: -2193853807793708613
+      background_1_32: -2382384769979341996
+      background_1_57: 6616105276510049527
+      background_1_5: 581725710635084708
+      background_1_28: 3812871152078678887
+      background_1_60: -807881481559245825
+      background_1_27: 1902752442816305699
+      background_1_47: 728413185651041914
+      background_1_64: 6522079659432057670
+      background_1_36: 2823166905820363194
+      background_1_29: -6446935275386386607
+      background_1_19: 3198182900095291245
+      background_1_16: -742863065743737977
+      background_1_7: -8273094529661867651
+      background_1_34: 4480420807168633014
+      background_1_40: -2393991804696048954
+      background_1_20: -9083675101734026259
+      background_1_33: -4516384629676895307
+      background_1_22: 192812380611116796
+      background_1_65: -2852577849201544737
+      background_1_46: 6212346536581573167
+      background_1_37: -7021569535771225172
+      background_1_12: 1975358975497270351
+      background_1_15: -4533729557611212247
+      background_1_48: -4802392088321822481
+      background_1_25: 3571238166498777809
+      background_1_14: 4708681785932207826
+      background_1_51: 203845726751453862
+      background_1_35: 6797016336143842047
+      background_1_44: 8000285263322158050
+      background_1_13: -8321336173424133341
+      background_1_11: -7813272820959981148
+      background_1_10: 1916384274728806155
+      background_1_55: 4708054327515445711
+      background_1_42: -7498305872195600871
+      background_1_52: -6753697004832525059
+      background_1_6: -3704012966869778327
+      background_1_50: -3915124413483930885
+      background_1_8: -1092452569839368440
+      background_1_21: 6520750078452311691
+      background_1_18: -3611971424415415668
+      background_1_49: 2745581049193515921
+      background_1_58: 3485069070431194437
+      background_1_39: 8697938735092337550
+      background_1_61: -7587348887466946833
+      background_1_62: -6376236173993668409
+      background_1_56: -2760016626559860538
+      background_1_53: 7879551878263158546
+      background_1_17: 7494528741460611861
+      background_1_23: 342560056120913915
+      background_1_24: -5037024710415159098
+      background_1_45: -3566630250293230314
+      background_1_31: -8025004853719280659
+      background_1_3: -1967199114143243497
+      background_1_0: -3254779602812191047
+      background_1_1: -8222093931959681663
+      background_1_26: -3993921743871771131
+      background_1_59: -1911517956606012278
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

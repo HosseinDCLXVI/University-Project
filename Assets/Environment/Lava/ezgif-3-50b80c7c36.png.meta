@@ -75,7 +75,7 @@ TextureImporter:
       213: 5612146653163321406
     second: ezgif-3-50b80c7c36_23
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -96,6 +96,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -134,6 +135,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -161,6 +163,42 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -688,6 +726,31 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      ezgif-3-50b80c7c36_19: -8442078022146958012
+      ezgif-3-50b80c7c36_7: 5090909871941116179
+      ezgif-3-50b80c7c36_0: -2539175815382394195
+      ezgif-3-50b80c7c36_16: 5102330897945344468
+      ezgif-3-50b80c7c36_23: 5612146653163321406
+      ezgif-3-50b80c7c36_6: -4610188505637546783
+      ezgif-3-50b80c7c36_14: -9217398431195185693
+      ezgif-3-50b80c7c36_2: 3504330838540395213
+      ezgif-3-50b80c7c36_18: 7635046585392290196
+      ezgif-3-50b80c7c36_11: 793080587531165835
+      ezgif-3-50b80c7c36_20: 1897467797330463188
+      ezgif-3-50b80c7c36_3: 8777075125803867669
+      ezgif-3-50b80c7c36_8: 356370717691684509
+      ezgif-3-50b80c7c36_9: -7346319689817225835
+      ezgif-3-50b80c7c36_13: -2322045691736296186
+      ezgif-3-50b80c7c36_17: -1373344444236210380
+      ezgif-3-50b80c7c36_15: 7738217704998494684
+      ezgif-3-50b80c7c36_12: 4480181724263003278
+      ezgif-3-50b80c7c36_5: 4736655432488381311
+      ezgif-3-50b80c7c36_4: 4169688620518091264
+      ezgif-3-50b80c7c36_21: 924377715218705887
+      ezgif-3-50b80c7c36_22: 809147562208918356
+      ezgif-3-50b80c7c36_1: -7834189015110483157
+      ezgif-3-50b80c7c36_10: 8964432031924900758
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -78,7 +78,7 @@ TextureImporter:
       213: 2452379788836774771
     second: old-dark-castle-in[terior-tileset_24
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -99,6 +99,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -137,6 +138,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -164,6 +166,42 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -714,6 +752,32 @@ TextureImporter:
     secondaryTextures:
     - texture: {fileID: 2800000, guid: 0003327693af8cc418b732930e78844a, type: 3}
       name: _NormalMap
+    nameFileIdTable:
+      old-dark-castle-in[terior-tileset_1: -8395634483188701445
+      old-dark-castle-in[terior-tileset_13: 4588128864249939021
+      old-dark-castle-in[terior-tileset_5: -3735833921669621864
+      old-dark-castle-in[terior-tileset_8: 773972446699286773
+      old-dark-castle-in[terior-tileset_12: -2046607818605947226
+      old-dark-castle-in[terior-tileset_24: 2452379788836774771
+      old-dark-castle-in[terior-tileset_0: -6035280801658663009
+      old-dark-castle-in[terior-tileset_20: 9026574156782309670
+      old-dark-castle-in[terior-tileset_6: 7739779996494239657
+      old-dark-castle-in[terior-tileset_3: 5472525870043221149
+      old-dark-castle-in[terior-tileset_11: 3710759413650946532
+      old-dark-castle-in[terior-tileset_10: -3732921306108055350
+      old-dark-castle-in[terior-tileset_19: -2056087261972533130
+      old-dark-castle-in[terior-tileset_4: 7896588590951152952
+      old-dark-castle-in[terior-tileset_21: 7929012666942414182
+      old-dark-castle-in[terior-tileset_9: -2133568417923681063
+      old-dark-castle-in[terior-tileset_15: -6951784410070227763
+      old-dark-castle-in[terior-tileset_17: 3451364272135397683
+      old-dark-castle-in[terior-tileset_22: -4670196897544995582
+      old-dark-castle-in[terior-tileset_2: -3262119553036483137
+      old-dark-castle-in[terior-tileset_7: 339045616658543031
+      old-dark-castle-in[terior-tileset_14: 168793748742577508
+      old-dark-castle-in[terior-tileset_23: -7970664283512268274
+      old-dark-castle-in[terior-tileset_16: 1437058726910957968
+      old-dark-castle-in[terior-tileset_18: -5198057149970344117
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -144,7 +144,7 @@ TextureImporter:
       213: -4800986346214522736
     second: background_2_46
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -165,6 +165,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -203,6 +204,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -230,6 +232,42 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -1240,6 +1278,54 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      background_2_1: 8388583605052051080
+      background_2_0: 214582040267025251
+      background_2_21: -3357825734024279870
+      background_2_31: 5047763309346891813
+      background_2_2: -5581524283329174437
+      background_2_17: 3664502556329264599
+      background_2_12: 1108694603428816564
+      background_2_41: -4371053735474906125
+      background_2_37: -7912724658537860881
+      background_2_19: -3209052497949647996
+      background_2_6: 2800828626933710349
+      background_2_45: 5084372692304632150
+      background_2_24: 6487073436892104611
+      background_2_42: -8796553179264290858
+      background_2_14: 8993513182236873721
+      background_2_25: 1294609544511102525
+      background_2_29: 4142786487457991753
+      background_2_10: -7915338444557026680
+      background_2_27: 4017723411124469468
+      background_2_36: 4691007949324315475
+      background_2_23: 693798683112025017
+      background_2_26: 2643874794425464092
+      background_2_30: 6494483013044944634
+      background_2_33: -3048092676124904329
+      background_2_28: -5642818580938089343
+      background_2_11: -4804507123904691008
+      background_2_38: 1920929032408027007
+      background_2_13: 5689368525383396741
+      background_2_16: -6977241552975398643
+      background_2_8: -1756467731560970099
+      background_2_9: -7597353872090393374
+      background_2_18: -4622587080054095713
+      background_2_32: -1427608124925248183
+      background_2_44: 2314105202479742698
+      background_2_35: 1540217734367004097
+      background_2_15: 7118110669797486142
+      background_2_4: -1008324214251257124
+      background_2_22: 4336101517177933537
+      background_2_3: 2738422989295998410
+      background_2_39: -1308690276615214162
+      background_2_43: -7918163119854265991
+      background_2_46: -4800986346214522736
+      background_2_7: -5137340245606050527
+      background_2_5: -3149129720785780115
+      background_2_20: -2731108244051383327
+      background_2_34: -4978233128228179057
+      background_2_40: 6507507021929863909
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
